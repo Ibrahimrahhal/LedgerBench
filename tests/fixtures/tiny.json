@@ -1,0 +1,141 @@
+{
+  "name": "LedgerBench",
+  "version": "1.0",
+  "size": "tiny",
+  "seed": 7,
+  "generated_on": "2026-10-30",
+  "users": [
+    {
+      "id": "u1",
+      "name": "Rana",
+      "profile": "A product designer who cycles to work and cooks most evenings.",
+      "currency": "EUR",
+      "units": {"body_weight": "kg", "lifts": "kg"},
+      "domains": ["spending", "food", "training", "body"],
+      "sessions": [
+        {"date": "2026-03-02", "weekday": "Monday", "messages": [
+          "groceries at Lidl, 46.20",
+          "coffee with Sam, 3.80. we talked for like 2 hours lol",
+          "bench 4x6 @ 80 today, felt strong"
+        ]},
+        {"date": "2026-03-03", "weekday": "Tuesday", "messages": [
+          "lunch was a chicken wrap 520 kcal, 38g protein",
+          "weighed in at 72.4 this morning"
+        ]},
+        {"date": "2026-03-04", "weekday": "Wednesday", "messages": [
+          "oh the groceries on Monday were 64.20, not 46.20",
+          "dinner out with Lea, €31.50",
+          "from next week bench goes up to 85"
+        ]},
+        {"date": "2026-03-05", "weekday": "Thursday", "messages": [
+          "taxi home 18 euros, the train was 20 minutes late",
+          "weighed 71.9"
+        ]}
+      ],
+      "questions": [
+        {
+          "id": "u1:q1", "domain": "spending", "skills": ["aggregate", "correction"],
+          "question": "How much did I spend on groceries from 2 March to 5 March 2026?",
+          "answer_type": "number", "gold": 64.2, "unit": "EUR", "rel_tol": 0.01, "abs_tol": 0.005,
+          "gold_text": "64.20 EUR", "aliases": [], "choices": [], "asked_on": "2026-03-05",
+          "evidence": ["u1:e1", "u1:e5"],
+          "derivation": {"op": "sum", "type": "expense", "field": "amount", "where": {"category": "groceries"}, "from": "2026-03-02", "to": "2026-03-05", "after": ["corrections"]}
+        },
+        {
+          "id": "u1:q2", "domain": "spending", "skills": ["aggregate"],
+          "question": "How many things did I buy from 2 March to 5 March 2026?",
+          "answer_type": "count", "gold": 4, "gold_text": "4", "aliases": [], "choices": [], "asked_on": "2026-03-05",
+          "evidence": ["u1:e1", "u1:e2", "u1:e6", "u1:e8"], "derivation": {"op": "count", "type": "expense"}
+        },
+        {
+          "id": "u1:q3", "domain": "spending", "skills": ["group"],
+          "question": "Which category did I spend the most on from 2 March to 5 March 2026?",
+          "answer_type": "category", "gold": "groceries", "gold_text": "groceries", "aliases": ["food shopping"],
+          "choices": ["groceries", "eating out", "coffee", "transport", "rent", "utilities", "subscriptions", "health", "clothing", "entertainment", "travel", "gifts", "household", "other"],
+          "asked_on": "2026-03-05", "evidence": ["u1:e1", "u1:e5", "u1:e6", "u1:e8"], "derivation": {"op": "argmax"}
+        },
+        {
+          "id": "u1:q4", "domain": "body", "skills": ["lookup"],
+          "question": "On which day in March 2026 did I weigh 71.9 kg?",
+          "answer_type": "date", "gold": "2026-03-05", "gold_text": "5 March 2026", "aliases": [], "choices": [], "asked_on": "2026-03-05",
+          "evidence": ["u1:e9"], "derivation": {"op": "lookup"}
+        },
+        {
+          "id": "u1:q5", "domain": "body", "skills": ["change"],
+          "question": "How much did my weight change from 3 March to 5 March 2026?",
+          "answer_type": "number", "gold": -0.5, "unit": "kg", "rel_tol": 0.01, "abs_tol": 0.05,
+          "gold_text": "-0.5 kg", "aliases": [], "choices": [], "asked_on": "2026-03-05",
+          "evidence": ["u1:e4", "u1:e9"], "derivation": {"op": "change"}
+        },
+        {
+          "id": "u1:q6", "domain": "training", "skills": ["state"],
+          "question": "What is my bench press working weight now?",
+          "answer_type": "text", "gold": null, "gold_text": "85 kg from the week of 9 March", "aliases": [], "choices": [], "asked_on": "2026-03-05",
+          "evidence": ["u1:e7"], "derivation": {"op": "state"}
+        },
+        {
+          "id": "u1:q7", "domain": "spending", "skills": ["window"],
+          "question": "On which weekdays from 2 March to 5 March 2026 did I spend money on transport or eating out?",
+          "answer_type": "set", "gold": ["Wednesday", "Thursday"], "gold_text": "Wednesday and Thursday",
+          "aliases": {"Wednesday": ["Wed"], "Thursday": ["Thu", "Thurs"]},
+          "choices": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "asked_on": "2026-03-05", "evidence": ["u1:e6", "u1:e8"], "derivation": {"op": "weekdays"}
+        }
+      ],
+      "events": [
+        {"id": "u1:e1", "type": "expense", "date": "2026-03-02", "session_date": "2026-03-02", "message": 0, "amount": 46.2, "category": "groceries", "merchant": "Lidl"},
+        {"id": "u1:e2", "type": "expense", "date": "2026-03-02", "session_date": "2026-03-02", "message": 1, "amount": 3.8, "category": "coffee"},
+        {"id": "u1:e3", "type": "workout", "date": "2026-03-02", "session_date": "2026-03-02", "message": 2, "session": "Push", "exercises": [{"name": "Bench press", "sets": [{"reps": 6, "weight": 80}, {"reps": 6, "weight": 80}, {"reps": 6, "weight": 80}, {"reps": 6, "weight": 80}]}]},
+        {"id": "u1:e4", "type": "weight", "date": "2026-03-03", "session_date": "2026-03-03", "message": 1, "value": 72.4},
+        {"id": "u1:e5", "type": "correction", "date": "2026-03-04", "session_date": "2026-03-04", "message": 0, "refers_to": "u1:e1", "field": "amount", "value": 64.2},
+        {"id": "u1:e6", "type": "expense", "date": "2026-03-04", "session_date": "2026-03-04", "message": 1, "amount": 31.5, "category": "eating out"},
+        {"id": "u1:e7", "type": "plan_change", "date": "2026-03-09", "session_date": "2026-03-04", "message": 2, "change": "bench goes up to 85"},
+        {"id": "u1:e8", "type": "expense", "date": "2026-03-05", "session_date": "2026-03-05", "message": 0, "amount": 18.0, "category": "transport"},
+        {"id": "u1:e9", "type": "weight", "date": "2026-03-05", "session_date": "2026-03-05", "message": 1, "value": 71.9}
+      ]
+    },
+    {
+      "id": "u2",
+      "name": "Tom",
+      "profile": "A nurse on rotating shifts who is saving for a trip.",
+      "currency": "GBP",
+      "units": {"body_weight": "lb", "lifts": "lb"},
+      "domains": ["spending", "food"],
+      "sessions": [
+        {"date": "2026-03-02", "weekday": "Monday", "messages": ["rent paid, £1,250", "porridge for breakfast, 350 kcal"]},
+        {"date": "2026-03-03", "weekday": "Tuesday", "messages": ["meal deal £3.99", "same breakfast as yesterday"]},
+        {"date": "2026-03-04", "weekday": "Wednesday", "messages": ["scratch the meal deal, I never bought it"]}
+      ],
+      "questions": [
+        {
+          "id": "u2:q1", "domain": "spending", "skills": ["aggregate"],
+          "question": "How much did I spend from 2 March to 4 March 2026?",
+          "answer_type": "number", "gold": 1250.0, "unit": "GBP", "rel_tol": 0.01, "abs_tol": 0.005,
+          "gold_text": "£1,250.00", "aliases": [], "choices": [], "asked_on": "2026-03-04", "evidence": ["u2:e1", "u2:e5"],
+          "derivation": {"op": "sum"}
+        },
+        {
+          "id": "u2:q2", "domain": "food", "skills": ["aggregate"],
+          "question": "How many kcal did I have at breakfast from 2 March to 3 March 2026?",
+          "answer_type": "number", "gold": 700, "unit": "kcal", "rel_tol": 0.01, "abs_tol": 0.5,
+          "gold_text": "700 kcal", "aliases": [], "choices": [], "asked_on": "2026-03-04", "evidence": ["u2:e2", "u2:e4"],
+          "derivation": {"op": "sum"}
+        },
+        {
+          "id": "u2:q3", "domain": "spending", "skills": ["window", "correction"],
+          "question": "On which weekdays from 2 March to 4 March 2026 did I buy a meal deal?",
+          "answer_type": "set", "gold": [], "gold_text": "none",
+          "aliases": [], "choices": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+          "asked_on": "2026-03-04", "evidence": ["u2:e3", "u2:e5"], "derivation": {"op": "weekdays"}
+        }
+      ],
+      "events": [
+        {"id": "u2:e1", "type": "expense", "date": "2026-03-02", "session_date": "2026-03-02", "message": 0, "amount": 1250.0, "category": "rent"},
+        {"id": "u2:e2", "type": "meal", "date": "2026-03-02", "session_date": "2026-03-02", "message": 1, "meal": "breakfast", "items": [{"name": "porridge", "qty": 1, "kcal": 350}]},
+        {"id": "u2:e3", "type": "expense", "date": "2026-03-03", "session_date": "2026-03-03", "message": 0, "amount": 3.99, "category": "eating out"},
+        {"id": "u2:e4", "type": "meal", "date": "2026-03-03", "session_date": "2026-03-03", "message": 1, "meal": "breakfast", "items": [{"name": "porridge", "qty": 1, "kcal": 350}]},
+        {"id": "u2:e5", "type": "retraction", "date": "2026-03-04", "session_date": "2026-03-04", "message": 0, "refers_to": "u2:e3"}
+      ]
+    }
+  ]
+}

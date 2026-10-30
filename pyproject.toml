@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ledgerbench"
+version = "1.0.0"
+description = "A benchmark for whether an AI assistant's memory can keep the books on a person's life."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Ibrahim Rahhal" }]
+keywords = ["benchmark", "llm", "memory", "agents", "evaluation"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Generation, loading and scoring are standard library only.
+dependencies = []
+
+[project.optional-dependencies]
+openai = ["openai>=1.60", "numpy>=1.26"]
+mem0 = ["mem0ai==2.2.1", "qdrant-client>=1.12", "openai>=1.60"]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+ledgerbench = "ledgerbench.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ledgerbench"]
+
+[tool.hatch.build.targets.sdist]
+include = ["ledgerbench", "tests", "docs", "README.md", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E501"]

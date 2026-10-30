@@ -1,0 +1,58 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,openai]"
+
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Unit tests
+        run: pytest -q
+
+      - name: Generate the mini dataset
+        run: |
+          if [ ! -f data/ledgerbench-mini.json ]; then
+            ledgerbench generate --size mini --seed 2026 --out data
+          fi
+
+      # The two test systems need no API key: the oracle must score 100%, null 0%.
+      - name: Oracle and null on mini
+        run: |
+          ledgerbench run --system oracle --data data/ledgerbench-mini.json --results-dir ci-results --run-id ci --quiet --no-judge
+          ledgerbench run --system null --data data/ledgerbench-mini.json --results-dir ci-results --run-id ci --quiet --no-judge
+          python - <<'PY'
+          import json, pathlib
+          for system, expected in (("oracle", 1.0), ("null", 0.0)):
+              summary = json.loads(pathlib.Path(f"ci-results/mini/{system}/ci/summary.json").read_text(encoding="utf-8"))
+              q = summary["questions"]
+              print(system, summary["accuracy"], q)
+              assert summary["accuracy"] == expected, f"{system} scored {summary['accuracy']}, expected {expected}"
+              assert q["answered"] == q["selected"] and q["unjudged"] == 0, f"{system}: not every question was scored"
+          PY
