@@ -294,10 +294,11 @@ class Mem0(MemorySystem):
 
 def _require_spacy(options: dict[str, Any]) -> None:
     """
-    Mem0 lemmatizes memories for its BM25 search and extracts entities with
-    spaCy. Without it Mem0 only logs a warning and runs degraded, which would
-    understate it, so the run refuses to start unless told otherwise with
-    `--option allow_degraded=true`.
+    Mem0's hybrid search needs two optional packages, and without either it
+    only logs a warning and runs degraded, which would understate it: spaCy
+    (lemmatization for BM25 and entity extraction) and fastembed (the BM25
+    encoder its Qdrant store uses; without it keyword search is off). The run
+    refuses to start without them unless told `--option allow_degraded=true`.
     """
     if str(options.get("allow_degraded", "")).lower() in ("1", "true", "yes"):
         return
@@ -310,4 +311,11 @@ def _require_spacy(options: dict[str, Any]) -> None:
             "mem0 needs spaCy and its English model for full-strength search: "
             "pip install 'ledgerbench[mem0]' && python -m spacy download en_core_web_sm "
             "(or pass --option allow_degraded=true to run without them, and say so)"
+        ) from error
+    try:
+        from fastembed import SparseTextEmbedding  # noqa: F401
+    except Exception as error:  # noqa: BLE001
+        raise RuntimeError(
+            "mem0 needs fastembed for its BM25 keyword search: pip install 'ledgerbench[mem0]' "
+            "(or pass --option allow_degraded=true to run without it, and say so)"
         ) from error

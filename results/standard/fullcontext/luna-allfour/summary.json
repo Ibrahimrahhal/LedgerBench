@@ -1,0 +1,278 @@
+{
+  "benchmark": "LedgerBench",
+  "system": "fullcontext",
+  "system_spec": "fullcontext",
+  "test_system": false,
+  "run_id": "luna-allfour",
+  "size": "standard",
+  "dataset": {
+    "name": "LedgerBench",
+    "version": "1.1",
+    "size": "standard",
+    "seed": 2026,
+    "generated_on": "2026-10-30",
+    "sha256": "2b31185ff8b00e9d25986c149c9e0bd8384dec79ef27949eae2970f446384750"
+  },
+  "date": "2026-10-30",
+  "started": "2026-10-30T20:09:42Z",
+  "git_commit": "c1eb39061e5d8de53675f473148f5050a9436fac",
+  "ledgerbench_version": "1.1.0",
+  "models": {
+    "answer": "gpt-6-luna",
+    "embedding": "text-embedding-3-small",
+    "judge": "gpt-5.4-mini",
+    "judge_used": [
+      "gpt-5.4-mini"
+    ]
+  },
+  "complete": true,
+  "subset": true,
+  "questions": {
+    "selected": 160,
+    "answered": 160,
+    "scored": 160,
+    "unjudged": 0
+  },
+  "users": {
+    "selected": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ],
+    "ingested": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ]
+  },
+  "accuracy": 0.825,
+  "correct": 132,
+  "by_domain": {
+    "body": {
+      "n": 33,
+      "correct": 32,
+      "accuracy": 0.9697
+    },
+    "cross": {
+      "n": 11,
+      "correct": 7,
+      "accuracy": 0.6364
+    },
+    "food": {
+      "n": 39,
+      "correct": 31,
+      "accuracy": 0.7949
+    },
+    "spending": {
+      "n": 46,
+      "correct": 33,
+      "accuracy": 0.7174
+    },
+    "training": {
+      "n": 31,
+      "correct": 29,
+      "accuracy": 0.9355
+    }
+  },
+  "by_skill": {
+    "adherence": {
+      "n": 8,
+      "correct": 6,
+      "accuracy": 0.75
+    },
+    "aggregate": {
+      "n": 63,
+      "correct": 49,
+      "accuracy": 0.7778
+    },
+    "as_of": {
+      "n": 13,
+      "correct": 13,
+      "accuracy": 1.0
+    },
+    "budget": {
+      "n": 6,
+      "correct": 1,
+      "accuracy": 0.1667
+    },
+    "change": {
+      "n": 19,
+      "correct": 13,
+      "accuracy": 0.6842
+    },
+    "correction": {
+      "n": 37,
+      "correct": 23,
+      "accuracy": 0.6216
+    },
+    "cross": {
+      "n": 11,
+      "correct": 7,
+      "accuracy": 0.6364
+    },
+    "group": {
+      "n": 13,
+      "correct": 13,
+      "accuracy": 1.0
+    },
+    "lookup": {
+      "n": 25,
+      "correct": 24,
+      "accuracy": 0.96
+    },
+    "state": {
+      "n": 19,
+      "correct": 19,
+      "accuracy": 1.0
+    },
+    "window": {
+      "n": 21,
+      "correct": 17,
+      "accuracy": 0.8095
+    }
+  },
+  "by_answer_type": {
+    "category": {
+      "n": 16,
+      "correct": 16,
+      "accuracy": 1.0
+    },
+    "count": {
+      "n": 21,
+      "correct": 16,
+      "accuracy": 0.7619
+    },
+    "date": {
+      "n": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    "number": {
+      "n": 116,
+      "correct": 93,
+      "accuracy": 0.8017
+    },
+    "set": {
+      "n": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    "text": {
+      "n": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    }
+  },
+  "by_method": {
+    "deterministic": {
+      "n": 159,
+      "correct": 131,
+      "accuracy": 0.8239
+    },
+    "judge": {
+      "n": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    }
+  },
+  "format_ok_rate": 1.0,
+  "latency_s": {
+    "mean": 8.601,
+    "p95": 30.787
+  },
+  "cost_usd": {
+    "ingestion": 0.0,
+    "ingestion_abandoned": 0.0,
+    "answering": 0.3255401,
+    "judge": 0.0004095,
+    "total": 0.3259496,
+    "answering_per_question": 0.00203463
+  },
+  "usage": {
+    "ingestion": {
+      "tokens_in": 0,
+      "cached_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.0,
+      "calls": 0,
+      "by_model": {}
+    },
+    "answering": {
+      "tokens_in": 2601266,
+      "cached_in": 0,
+      "tokens_out": 130827,
+      "cost_usd": 0.3255401,
+      "calls": 160,
+      "by_model": {
+        "gpt-6-luna": {
+          "calls": 160,
+          "tokens_in": 2601266,
+          "cached_in": 0,
+          "tokens_out": 130827,
+          "cost_usd": 0.3255401
+        }
+      }
+    },
+    "judge": {
+      "tokens_in": 318,
+      "cached_in": 0,
+      "tokens_out": 38,
+      "cost_usd": 0.0004095,
+      "calls": 1,
+      "by_model": {
+        "gpt-5.4-mini": {
+          "calls": 1,
+          "tokens_in": 318,
+          "cached_in": 0,
+          "tokens_out": 38,
+          "cost_usd": 0.0004095
+        }
+      }
+    }
+  },
+  "unpriced_models": [],
+  "ingestion": {
+    "users": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ],
+    "sessions": 360,
+    "messages": 2395,
+    "seconds": 0.0,
+    "cost_usd": 0.0,
+    "abandoned_cost_usd": 0.0,
+    "per_user": {
+      "u1": {
+        "cost_usd": 0.0,
+        "seconds": 0.0,
+        "messages": 579
+      },
+      "u2": {
+        "cost_usd": 0.0,
+        "seconds": 0.0,
+        "messages": 625
+      },
+      "u5": {
+        "cost_usd": 0.0,
+        "seconds": 0.0,
+        "messages": 579
+      },
+      "u8": {
+        "cost_usd": 0.0,
+        "seconds": 0.0,
+        "messages": 612
+      }
+    }
+  },
+  "stopped": null,
+  "options": {
+    "workers": 4,
+    "ingest_workers": 1,
+    "max_cost": 0.8
+  },
+  "notes": "Every session in the prompt, oldest first, each headed by its weekday and date; one completion per question; no ingestion cost."
+}

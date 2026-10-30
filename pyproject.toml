@@ -26,9 +26,10 @@ dependencies = []
 
 [project.optional-dependencies]
 openai = ["openai>=1.60", "numpy>=1.26"]
-# mem0ai's nlp extra (spaCy) powers its BM25 lemmatization and entity search;
-# without it Mem0 runs degraded. Then: python -m spacy download en_core_web_sm
-mem0 = ["mem0ai[nlp]==2.2.1", "qdrant-client>=1.12", "openai>=1.60"]
+# mem0ai's hybrid search needs spaCy (its nlp extra: lemmatization and entities)
+# and fastembed (the BM25 encoder for Qdrant); without them Mem0 runs degraded.
+# Then: python -m spacy download en_core_web_sm
+mem0 = ["mem0ai[nlp]==2.2.1", "fastembed>=0.3.1", "qdrant-client>=1.12", "openai>=1.60"]
 dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.scripts]

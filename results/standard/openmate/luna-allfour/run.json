@@ -1,0 +1,41 @@
+{
+  "started": "2026-10-30T20:09:42Z",
+  "run_id": "luna-allfour",
+  "system": "openmate",
+  "system_spec": "ledgerbench_openmate:OpenMate",
+  "test_system": false,
+  "dataset": {
+    "name": "LedgerBench",
+    "version": "1.1",
+    "size": "standard",
+    "seed": 2026,
+    "generated_on": "2026-10-30",
+    "sha256": "2b31185ff8b00e9d25986c149c9e0bd8384dec79ef27949eae2970f446384750",
+    "path": "data/ledgerbench-standard.json"
+  },
+  "users": [
+    "u1",
+    "u2",
+    "u5",
+    "u8"
+  ],
+  "max_questions": null,
+  "subset": true,
+  "questions_selected": 160,
+  "git_commit": "c1eb39061e5d8de53675f473148f5050a9436fac",
+  "ledgerbench_version": "1.1.0",
+  "options": {
+    "workers": 4,
+    "ingest_workers": 4,
+    "max_cost": 6.5
+  },
+  "stopped": null,
+  "updated": "2026-10-30T21:43:31Z",
+  "models": {
+    "answer": "gpt-6-luna",
+    "embedding": "text-embedding-3-small",
+    "judge": "gpt-5.4-mini",
+    "memory": "gpt-6-luna"
+  },
+  "notes": "Open Mate as shipped, driven through its own completion path: one agent per user (profile plus a neutral purpose sentence, no hint about tables), one chat per session, one turn per message dated at the session's day, each session's first message prefixed 'Today is <date>.' because the app reads today from the clock; after each chat the conversation is indexed and the review pass run, as the workers would. Each question in a fresh chat, prefixed with 'Today is <asked_on>.'. Costs from the app's own usage rows. Postgres with pgvector, so history search is hybrid."
+}

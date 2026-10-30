@@ -1,0 +1,40 @@
+{
+  "started": "2026-10-30T20:09:42Z",
+  "run_id": "luna-allfour",
+  "system": "rag",
+  "system_spec": "rag",
+  "test_system": false,
+  "dataset": {
+    "name": "LedgerBench",
+    "version": "1.1",
+    "size": "standard",
+    "seed": 2026,
+    "generated_on": "2026-10-30",
+    "sha256": "2b31185ff8b00e9d25986c149c9e0bd8384dec79ef27949eae2970f446384750",
+    "path": "data/ledgerbench-standard.json"
+  },
+  "users": [
+    "u1",
+    "u2",
+    "u5",
+    "u8"
+  ],
+  "max_questions": null,
+  "subset": true,
+  "questions_selected": 160,
+  "git_commit": "c1eb39061e5d8de53675f473148f5050a9436fac",
+  "ledgerbench_version": "1.1.0",
+  "options": {
+    "workers": 4,
+    "ingest_workers": 1,
+    "max_cost": 0.2
+  },
+  "stopped": null,
+  "updated": "2026-10-30T20:14:30Z",
+  "models": {
+    "answer": "gpt-6-luna",
+    "embedding": "text-embedding-3-small",
+    "judge": "gpt-5.4-mini"
+  },
+  "notes": "One chunk per message, '[weekday date] message', embedded with the run's embedding model; top 20 by cosine on the question's text (without the format instruction), shown in date order; one completion per question. Ingestion cost is the embeddings."
+}

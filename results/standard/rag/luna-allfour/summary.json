@@ -1,0 +1,293 @@
+{
+  "benchmark": "LedgerBench",
+  "system": "rag",
+  "system_spec": "rag",
+  "test_system": false,
+  "run_id": "luna-allfour",
+  "size": "standard",
+  "dataset": {
+    "name": "LedgerBench",
+    "version": "1.1",
+    "size": "standard",
+    "seed": 2026,
+    "generated_on": "2026-10-30",
+    "sha256": "2b31185ff8b00e9d25986c149c9e0bd8384dec79ef27949eae2970f446384750"
+  },
+  "date": "2026-10-30",
+  "started": "2026-10-30T20:09:42Z",
+  "git_commit": "c1eb39061e5d8de53675f473148f5050a9436fac",
+  "ledgerbench_version": "1.1.0",
+  "models": {
+    "answer": "gpt-6-luna",
+    "embedding": "text-embedding-3-small",
+    "judge": "gpt-5.4-mini",
+    "judge_used": [
+      "gpt-5.4-mini"
+    ]
+  },
+  "complete": true,
+  "subset": true,
+  "questions": {
+    "selected": 160,
+    "answered": 160,
+    "scored": 160,
+    "unjudged": 0
+  },
+  "users": {
+    "selected": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ],
+    "ingested": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ]
+  },
+  "accuracy": 0.4625,
+  "correct": 74,
+  "by_domain": {
+    "body": {
+      "n": 33,
+      "correct": 21,
+      "accuracy": 0.6364
+    },
+    "cross": {
+      "n": 11,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "food": {
+      "n": 39,
+      "correct": 15,
+      "accuracy": 0.3846
+    },
+    "spending": {
+      "n": 46,
+      "correct": 20,
+      "accuracy": 0.4348
+    },
+    "training": {
+      "n": 31,
+      "correct": 18,
+      "accuracy": 0.5806
+    }
+  },
+  "by_skill": {
+    "adherence": {
+      "n": 8,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "aggregate": {
+      "n": 63,
+      "correct": 16,
+      "accuracy": 0.254
+    },
+    "as_of": {
+      "n": 13,
+      "correct": 12,
+      "accuracy": 0.9231
+    },
+    "budget": {
+      "n": 6,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "change": {
+      "n": 19,
+      "correct": 9,
+      "accuracy": 0.4737
+    },
+    "correction": {
+      "n": 37,
+      "correct": 10,
+      "accuracy": 0.2703
+    },
+    "cross": {
+      "n": 11,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "group": {
+      "n": 13,
+      "correct": 5,
+      "accuracy": 0.3846
+    },
+    "lookup": {
+      "n": 25,
+      "correct": 20,
+      "accuracy": 0.8
+    },
+    "state": {
+      "n": 19,
+      "correct": 18,
+      "accuracy": 0.9474
+    },
+    "window": {
+      "n": 21,
+      "correct": 2,
+      "accuracy": 0.0952
+    }
+  },
+  "by_answer_type": {
+    "category": {
+      "n": 16,
+      "correct": 8,
+      "accuracy": 0.5
+    },
+    "count": {
+      "n": 21,
+      "correct": 1,
+      "accuracy": 0.0476
+    },
+    "date": {
+      "n": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    "number": {
+      "n": 116,
+      "correct": 59,
+      "accuracy": 0.5086
+    },
+    "set": {
+      "n": 2,
+      "correct": 1,
+      "accuracy": 0.5
+    },
+    "text": {
+      "n": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    }
+  },
+  "by_method": {
+    "deterministic": {
+      "n": 159,
+      "correct": 73,
+      "accuracy": 0.4591
+    },
+    "judge": {
+      "n": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    }
+  },
+  "format_ok_rate": 1.0,
+  "latency_s": {
+    "mean": 3.957,
+    "p95": 8.752
+  },
+  "cost_usd": {
+    "ingestion": 0.00162776,
+    "ingestion_abandoned": 0.0,
+    "answering": 0.03945248,
+    "judge": 0.000405,
+    "total": 0.04148524,
+    "answering_per_question": 0.00024658
+  },
+  "usage": {
+    "ingestion": {
+      "tokens_in": 81388,
+      "cached_in": 0,
+      "tokens_out": 0,
+      "cost_usd": 0.00162776,
+      "calls": 360,
+      "by_model": {
+        "text-embedding-3-small": {
+          "calls": 360,
+          "tokens_in": 81388,
+          "cached_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.00162776
+        }
+      }
+    },
+    "answering": {
+      "tokens_in": 180489,
+      "cached_in": 0,
+      "tokens_out": 43467,
+      "cost_usd": 0.03945248,
+      "calls": 320,
+      "by_model": {
+        "gpt-6-luna": {
+          "calls": 160,
+          "tokens_in": 176365,
+          "cached_in": 0,
+          "tokens_out": 43467,
+          "cost_usd": 0.03937
+        },
+        "text-embedding-3-small": {
+          "calls": 160,
+          "tokens_in": 4124,
+          "cached_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 8.248e-05
+        }
+      }
+    },
+    "judge": {
+      "tokens_in": 318,
+      "cached_in": 0,
+      "tokens_out": 37,
+      "cost_usd": 0.000405,
+      "calls": 1,
+      "by_model": {
+        "gpt-5.4-mini": {
+          "calls": 1,
+          "tokens_in": 318,
+          "cached_in": 0,
+          "tokens_out": 37,
+          "cost_usd": 0.000405
+        }
+      }
+    }
+  },
+  "unpriced_models": [],
+  "ingestion": {
+    "users": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ],
+    "sessions": 360,
+    "messages": 2395,
+    "seconds": 128.51,
+    "cost_usd": 0.00162776,
+    "abandoned_cost_usd": 0.0,
+    "per_user": {
+      "u1": {
+        "cost_usd": 0.00032178,
+        "seconds": 32.775,
+        "messages": 579
+      },
+      "u2": {
+        "cost_usd": 0.0004137,
+        "seconds": 32.878,
+        "messages": 625
+      },
+      "u5": {
+        "cost_usd": 0.00042858,
+        "seconds": 31.452,
+        "messages": 579
+      },
+      "u8": {
+        "cost_usd": 0.0004637,
+        "seconds": 31.406,
+        "messages": 612
+      }
+    }
+  },
+  "stopped": null,
+  "options": {
+    "workers": 4,
+    "ingest_workers": 1,
+    "max_cost": 0.2
+  },
+  "notes": "One chunk per message, '[weekday date] message', embedded with the run's embedding model; top 20 by cosine on the question's text (without the format instruction), shown in date order; one completion per question. Ingestion cost is the embeddings."
+}

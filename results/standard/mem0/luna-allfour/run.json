@@ -1,0 +1,42 @@
+{
+  "started": "2026-10-30T20:59:27Z",
+  "run_id": "luna-allfour",
+  "system": "mem0",
+  "system_spec": "mem0",
+  "test_system": false,
+  "dataset": {
+    "name": "LedgerBench",
+    "version": "1.1",
+    "size": "standard",
+    "seed": 2026,
+    "generated_on": "2026-10-30",
+    "sha256": "2b31185ff8b00e9d25986c149c9e0bd8384dec79ef27949eae2970f446384750",
+    "path": "data/ledgerbench-standard.json"
+  },
+  "users": [
+    "u1",
+    "u2",
+    "u5",
+    "u8"
+  ],
+  "max_questions": null,
+  "subset": true,
+  "questions_selected": 160,
+  "git_commit": "c1eb39061e5d8de53675f473148f5050a9436fac-dirty",
+  "ledgerbench_version": "1.1.0",
+  "options": {
+    "workers": 4,
+    "ingest_workers": 4,
+    "max_cost": 1.2
+  },
+  "stopped": null,
+  "updated": "2026-10-30T21:48:55Z",
+  "models": {
+    "answer": "gpt-6-luna",
+    "embedding": "text-embedding-3-small",
+    "judge": "gpt-5.4-mini",
+    "mem0_llm": "gpt-6-luna",
+    "mem0ai": "2.2.1"
+  },
+  "notes": "mem0ai 2.2.1 Memory.from_config: OpenAI llm (the run's answer model, mem0's own sampling defaults), OpenAI embedder (the run's embedding model), Qdrant collection ledgerbench_standard_luna_allfour. One user_id per user; each message added on its own as a 'user' turn with '[weekday date]' in the text, metadata session_date and weekday, infer=True, and the session date passed as add(prompt=...) so the extractor resolves relative dates against it. Answering: search(top_k=30) on the question's text, memories listed with their day, the shared answer prompt. Ingestion and search usage metered by patching the OpenAI SDK."
+}

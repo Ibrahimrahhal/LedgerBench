@@ -1,0 +1,302 @@
+{
+  "benchmark": "LedgerBench",
+  "system": "mem0",
+  "system_spec": "mem0",
+  "test_system": false,
+  "run_id": "luna-allfour",
+  "size": "standard",
+  "dataset": {
+    "name": "LedgerBench",
+    "version": "1.1",
+    "size": "standard",
+    "seed": 2026,
+    "generated_on": "2026-10-30",
+    "sha256": "2b31185ff8b00e9d25986c149c9e0bd8384dec79ef27949eae2970f446384750"
+  },
+  "date": "2026-10-30",
+  "started": "2026-10-30T20:59:27Z",
+  "git_commit": "c1eb39061e5d8de53675f473148f5050a9436fac-dirty",
+  "ledgerbench_version": "1.1.0",
+  "models": {
+    "answer": "gpt-6-luna",
+    "embedding": "text-embedding-3-small",
+    "judge": "gpt-5.4-mini",
+    "mem0_llm": "gpt-6-luna",
+    "mem0ai": "2.2.1",
+    "judge_used": [
+      "gpt-5.4-mini"
+    ]
+  },
+  "complete": true,
+  "subset": true,
+  "questions": {
+    "selected": 160,
+    "answered": 160,
+    "scored": 160,
+    "unjudged": 0
+  },
+  "users": {
+    "selected": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ],
+    "ingested": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ]
+  },
+  "accuracy": 0.5625,
+  "correct": 90,
+  "by_domain": {
+    "body": {
+      "n": 33,
+      "correct": 27,
+      "accuracy": 0.8182
+    },
+    "cross": {
+      "n": 11,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "food": {
+      "n": 39,
+      "correct": 19,
+      "accuracy": 0.4872
+    },
+    "spending": {
+      "n": 46,
+      "correct": 21,
+      "accuracy": 0.4565
+    },
+    "training": {
+      "n": 31,
+      "correct": 23,
+      "accuracy": 0.7419
+    }
+  },
+  "by_skill": {
+    "adherence": {
+      "n": 8,
+      "correct": 1,
+      "accuracy": 0.125
+    },
+    "aggregate": {
+      "n": 63,
+      "correct": 21,
+      "accuracy": 0.3333
+    },
+    "as_of": {
+      "n": 13,
+      "correct": 13,
+      "accuracy": 1.0
+    },
+    "budget": {
+      "n": 6,
+      "correct": 1,
+      "accuracy": 0.1667
+    },
+    "change": {
+      "n": 19,
+      "correct": 8,
+      "accuracy": 0.4211
+    },
+    "correction": {
+      "n": 37,
+      "correct": 12,
+      "accuracy": 0.3243
+    },
+    "cross": {
+      "n": 11,
+      "correct": 0,
+      "accuracy": 0.0
+    },
+    "group": {
+      "n": 13,
+      "correct": 9,
+      "accuracy": 0.6923
+    },
+    "lookup": {
+      "n": 25,
+      "correct": 24,
+      "accuracy": 0.96
+    },
+    "state": {
+      "n": 19,
+      "correct": 19,
+      "accuracy": 1.0
+    },
+    "window": {
+      "n": 21,
+      "correct": 5,
+      "accuracy": 0.2381
+    }
+  },
+  "by_answer_type": {
+    "category": {
+      "n": 16,
+      "correct": 12,
+      "accuracy": 0.75
+    },
+    "count": {
+      "n": 21,
+      "correct": 4,
+      "accuracy": 0.1905
+    },
+    "date": {
+      "n": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    "number": {
+      "n": 116,
+      "correct": 67,
+      "accuracy": 0.5776
+    },
+    "set": {
+      "n": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    "text": {
+      "n": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    }
+  },
+  "by_method": {
+    "deterministic": {
+      "n": 159,
+      "correct": 89,
+      "accuracy": 0.5597
+    },
+    "judge": {
+      "n": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    }
+  },
+  "format_ok_rate": 1.0,
+  "latency_s": {
+    "mean": 4.463,
+    "p95": 9.86
+  },
+  "cost_usd": {
+    "ingestion": 0.70402413,
+    "ingestion_abandoned": 0.0,
+    "answering": 0.05147496,
+    "judge": 0.000372,
+    "total": 0.75587109,
+    "answering_per_question": 0.00032172
+  },
+  "usage": {
+    "ingestion": {
+      "tokens_in": 20910171,
+      "cached_in": 18223555,
+      "tokens_out": 538901,
+      "cost_usd": 0.70402413,
+      "calls": 9558,
+      "by_model": {
+        "gpt-6-luna": {
+          "calls": 2395,
+          "tokens_in": 20706127,
+          "cached_in": 18223555,
+          "tokens_out": 538901,
+          "cost_usd": 0.69994325
+        },
+        "text-embedding-3-small": {
+          "calls": 7163,
+          "tokens_in": 204044,
+          "cached_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.00408088
+        }
+      }
+    },
+    "answering": {
+      "tokens_in": 305574,
+      "cached_in": 0,
+      "tokens_out": 42574,
+      "cost_usd": 0.05147496,
+      "calls": 469,
+      "by_model": {
+        "gpt-6-luna": {
+          "calls": 160,
+          "tokens_in": 300956,
+          "cached_in": 0,
+          "tokens_out": 42574,
+          "cost_usd": 0.0513826
+        },
+        "text-embedding-3-small": {
+          "calls": 309,
+          "tokens_in": 4618,
+          "cached_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 9.236e-05
+        }
+      }
+    },
+    "judge": {
+      "tokens_in": 316,
+      "cached_in": 0,
+      "tokens_out": 30,
+      "cost_usd": 0.000372,
+      "calls": 1,
+      "by_model": {
+        "gpt-5.4-mini": {
+          "calls": 1,
+          "tokens_in": 316,
+          "cached_in": 0,
+          "tokens_out": 30,
+          "cost_usd": 0.000372
+        }
+      }
+    }
+  },
+  "unpriced_models": [],
+  "ingestion": {
+    "users": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ],
+    "sessions": 360,
+    "messages": 2395,
+    "seconds": 10456.01,
+    "cost_usd": 0.70402413,
+    "abandoned_cost_usd": 0.0,
+    "per_user": {
+      "u1": {
+        "cost_usd": 0.15885935,
+        "seconds": 2468.618,
+        "messages": 579
+      },
+      "u2": {
+        "cost_usd": 0.18301481,
+        "seconds": 2783.364,
+        "messages": 625
+      },
+      "u5": {
+        "cost_usd": 0.17695147,
+        "seconds": 2551.301,
+        "messages": 579
+      },
+      "u8": {
+        "cost_usd": 0.1851985,
+        "seconds": 2652.731,
+        "messages": 612
+      }
+    }
+  },
+  "stopped": null,
+  "options": {
+    "workers": 4,
+    "ingest_workers": 4,
+    "max_cost": 1.2
+  },
+  "notes": "mem0ai 2.2.1 Memory.from_config: OpenAI llm (the run's answer model, mem0's own sampling defaults), OpenAI embedder (the run's embedding model), Qdrant collection ledgerbench_standard_luna_allfour. One user_id per user; each message added on its own as a 'user' turn with '[weekday date]' in the text, metadata session_date and weekday, infer=True, and the session date passed as add(prompt=...) so the extractor resolves relative dates against it. Answering: search(top_k=30) on the question's text, memories listed with their day, the shared answer prompt. Ingestion and search usage metered by patching the OpenAI SDK."
+}

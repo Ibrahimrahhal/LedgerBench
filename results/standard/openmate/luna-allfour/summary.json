@@ -1,0 +1,301 @@
+{
+  "benchmark": "LedgerBench",
+  "system": "openmate",
+  "system_spec": "ledgerbench_openmate:OpenMate",
+  "test_system": false,
+  "run_id": "luna-allfour",
+  "size": "standard",
+  "dataset": {
+    "name": "LedgerBench",
+    "version": "1.1",
+    "size": "standard",
+    "seed": 2026,
+    "generated_on": "2026-10-30",
+    "sha256": "2b31185ff8b00e9d25986c149c9e0bd8384dec79ef27949eae2970f446384750"
+  },
+  "date": "2026-10-30",
+  "started": "2026-10-30T20:09:42Z",
+  "git_commit": "c1eb39061e5d8de53675f473148f5050a9436fac",
+  "ledgerbench_version": "1.1.0",
+  "models": {
+    "answer": "gpt-6-luna",
+    "embedding": "text-embedding-3-small",
+    "judge": "gpt-5.4-mini",
+    "memory": "gpt-6-luna",
+    "judge_used": [
+      "gpt-5.4-mini"
+    ]
+  },
+  "complete": true,
+  "subset": true,
+  "questions": {
+    "selected": 160,
+    "answered": 160,
+    "scored": 160,
+    "unjudged": 0
+  },
+  "users": {
+    "selected": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ],
+    "ingested": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ]
+  },
+  "accuracy": 0.6875,
+  "correct": 110,
+  "by_domain": {
+    "body": {
+      "n": 33,
+      "correct": 27,
+      "accuracy": 0.8182
+    },
+    "cross": {
+      "n": 11,
+      "correct": 6,
+      "accuracy": 0.5455
+    },
+    "food": {
+      "n": 39,
+      "correct": 30,
+      "accuracy": 0.7692
+    },
+    "spending": {
+      "n": 46,
+      "correct": 26,
+      "accuracy": 0.5652
+    },
+    "training": {
+      "n": 31,
+      "correct": 21,
+      "accuracy": 0.6774
+    }
+  },
+  "by_skill": {
+    "adherence": {
+      "n": 8,
+      "correct": 6,
+      "accuracy": 0.75
+    },
+    "aggregate": {
+      "n": 63,
+      "correct": 41,
+      "accuracy": 0.6508
+    },
+    "as_of": {
+      "n": 13,
+      "correct": 13,
+      "accuracy": 1.0
+    },
+    "budget": {
+      "n": 6,
+      "correct": 1,
+      "accuracy": 0.1667
+    },
+    "change": {
+      "n": 19,
+      "correct": 8,
+      "accuracy": 0.4211
+    },
+    "correction": {
+      "n": 37,
+      "correct": 20,
+      "accuracy": 0.5405
+    },
+    "cross": {
+      "n": 11,
+      "correct": 6,
+      "accuracy": 0.5455
+    },
+    "group": {
+      "n": 13,
+      "correct": 7,
+      "accuracy": 0.5385
+    },
+    "lookup": {
+      "n": 25,
+      "correct": 22,
+      "accuracy": 0.88
+    },
+    "state": {
+      "n": 19,
+      "correct": 17,
+      "accuracy": 0.8947
+    },
+    "window": {
+      "n": 21,
+      "correct": 14,
+      "accuracy": 0.6667
+    }
+  },
+  "by_answer_type": {
+    "category": {
+      "n": 16,
+      "correct": 9,
+      "accuracy": 0.5625
+    },
+    "count": {
+      "n": 21,
+      "correct": 13,
+      "accuracy": 0.619
+    },
+    "date": {
+      "n": 4,
+      "correct": 4,
+      "accuracy": 1.0
+    },
+    "number": {
+      "n": 116,
+      "correct": 81,
+      "accuracy": 0.6983
+    },
+    "set": {
+      "n": 2,
+      "correct": 2,
+      "accuracy": 1.0
+    },
+    "text": {
+      "n": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    }
+  },
+  "by_method": {
+    "deterministic": {
+      "n": 159,
+      "correct": 109,
+      "accuracy": 0.6855
+    },
+    "judge": {
+      "n": 1,
+      "correct": 1,
+      "accuracy": 1.0
+    }
+  },
+  "format_ok_rate": 1.0,
+  "latency_s": {
+    "mean": 8.952,
+    "p95": 19.88
+  },
+  "cost_usd": {
+    "ingestion": 5.30400711,
+    "ingestion_abandoned": 0.0,
+    "answering": 0.37344895,
+    "judge": 0.0003735,
+    "total": 5.67782956,
+    "answering_per_question": 0.00233406
+  },
+  "usage": {
+    "ingestion": {
+      "tokens_in": 95240518,
+      "cached_in": 50614195,
+      "tokens_out": 700635,
+      "cost_usd": 5.30400711,
+      "calls": 720,
+      "by_model": {
+        "gpt-6-luna": {
+          "calls": 360,
+          "tokens_in": 95051960,
+          "cached_in": 50614195,
+          "tokens_out": 700635,
+          "cost_usd": 5.30023595
+        },
+        "text-embedding-3-small": {
+          "calls": 360,
+          "tokens_in": 188558,
+          "cached_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 0.00377116
+        }
+      }
+    },
+    "answering": {
+      "tokens_in": 7229391,
+      "cached_in": 4218743,
+      "tokens_out": 60492,
+      "cost_usd": 0.37344895,
+      "calls": 195,
+      "by_model": {
+        "gpt-6-luna": {
+          "calls": 160,
+          "tokens_in": 7228775,
+          "cached_in": 4218743,
+          "tokens_out": 60492,
+          "cost_usd": 0.37343663
+        },
+        "text-embedding-3-small": {
+          "calls": 35,
+          "tokens_in": 616,
+          "cached_in": 0,
+          "tokens_out": 0,
+          "cost_usd": 1.232e-05
+        }
+      }
+    },
+    "judge": {
+      "tokens_in": 318,
+      "cached_in": 0,
+      "tokens_out": 30,
+      "cost_usd": 0.0003735,
+      "calls": 1,
+      "by_model": {
+        "gpt-5.4-mini": {
+          "calls": 1,
+          "tokens_in": 318,
+          "cached_in": 0,
+          "tokens_out": 30,
+          "cost_usd": 0.0003735
+        }
+      }
+    }
+  },
+  "unpriced_models": [],
+  "ingestion": {
+    "users": [
+      "u1",
+      "u2",
+      "u5",
+      "u8"
+    ],
+    "sessions": 360,
+    "messages": 2395,
+    "seconds": 19163.32,
+    "cost_usd": 5.30400711,
+    "abandoned_cost_usd": 0.0,
+    "per_user": {
+      "u1": {
+        "cost_usd": 1.24072627,
+        "seconds": 4231.873,
+        "messages": 579
+      },
+      "u2": {
+        "cost_usd": 1.39515405,
+        "seconds": 5263.34,
+        "messages": 625
+      },
+      "u5": {
+        "cost_usd": 1.28168938,
+        "seconds": 4596.428,
+        "messages": 579
+      },
+      "u8": {
+        "cost_usd": 1.38643741,
+        "seconds": 5071.68,
+        "messages": 612
+      }
+    }
+  },
+  "stopped": null,
+  "options": {
+    "workers": 4,
+    "ingest_workers": 4,
+    "max_cost": 6.5
+  },
+  "notes": "Open Mate as shipped, driven through its own completion path: one agent per user (profile plus a neutral purpose sentence, no hint about tables), one chat per session, one turn per message dated at the session's day, each session's first message prefixed 'Today is <date>.' because the app reads today from the clock; after each chat the conversation is indexed and the review pass run, as the workers would. Each question in a fresh chat, prefixed with 'Today is <asked_on>.'. Costs from the app's own usage rows. Postgres with pgvector, so history search is hybrid."
+}

@@ -22,10 +22,9 @@ The public long-term-memory benchmarks, [LoCoMo](https://arxiv.org/abs/2402.1775
 and [LongMemEval](https://arxiv.org/abs/2410.10813), ask about facts and events
 in a conversation: who said what, and when. They don't ask for a total. Yet a
 total is what people want from an assistant that tracks their spending, food
-or training. It's also where memory kept as prose fails. In a pilot on an
-earlier version of this dataset, gpt-5.4-mini with the user's entire history
-in its prompt got 2 of 24 spending totals right, while recalling 16 of 16
-current facts correctly.
+or training. It's also where the memory layers people use today fail: in the
+first results below, Mem0 and naive RAG answer a third or less of the
+questions that need a total, while getting nearly every fact lookup right.
 
 LedgerBench is only about records. To do well, a system has to:
 
@@ -132,12 +131,58 @@ system that always says "I don't know" scores 0%.
 
 ## Results
 
-No runs are published yet. The first table will compare full context, naive
-RAG, [Mem0](https://github.com/mem0ai/mem0) and
-[Open Mate](https://openmate.si) on `standard`, all answering with
-`gpt-6-luna`. It will report accuracy by domain and skill, cost and latency.
-`ledgerbench leaderboard` builds `results/LEADERBOARD.md` from every run's
-`summary.json`.
+First results, October 2026, on dataset 1.1. Four systems answered the same
+160 questions: the `standard` questions of the four people who track all four
+domains (u1, u2, u5, u8; 2,395 messages over 90 days each). The subset was
+chosen by that rule, not by difficulty, to fit the budget of a first run.
+Every system answered with `gpt-6-luna`. Runs and every reply are in
+`results/`; `results/LEADERBOARD.md` has the full table.
+
+| System | Accuracy | 95% interval | Ingestion | Answering | Mean latency |
+|---|---|---|---|---|---|
+| Full context | **82.5%** | ±5.9 | $0.00 | $0.33 | 8.6 s |
+| [Open Mate](https://openmate.si) | 68.8% | ±7.2 | $5.30 | $0.37 | 9.0 s |
+| [Mem0](https://github.com/mem0ai/mem0) 2.2.1 | 56.2% | ±7.7 | $0.70 | $0.05 | 4.5 s |
+| Naive RAG | 46.2% | ±7.7 | $0.00 | $0.04 | 4.0 s |
+
+By skill (the number of questions in brackets; a question can have several):
+
+| Skill | Full context | Open Mate | Mem0 | Naive RAG |
+|---|---|---|---|---|
+| Lookup (25) | 96% | 88% | 96% | 80% |
+| State now (19) | 100% | 89% | 100% | 95% |
+| As of a date (13) | 100% | 100% | 100% | 92% |
+| Aggregate (63) | 78% | 65% | 33% | 25% |
+| Window (21) | 81% | 67% | 24% | 10% |
+| Cross-domain (11) | 64% | 55% | 0% | 0% |
+| Adherence (8) | 75% | 75% | 12% | 0% |
+| Group (13) | 100% | 54% | 69% | 38% |
+| Change (19) | 68% | 42% | 42% | 47% |
+| Correction (37) | 62% | 54% | 32% | 27% |
+| Budget (6) | 17% | 17% | 17% | 0% |
+
+What it shows:
+
+- **Remembering a fact is solved.** Every system answers lookups and
+  current-state questions at 80% or better.
+- **Computing over records is not, for retrieval-based memory.** Mem0 and RAG
+  fall to 0 to 33% on totals, windows, joins across domains and plan adherence,
+  because a total needs every relevant record and retrieval returns a few.
+  Open Mate, which writes records into tables it defines and queries them,
+  keeps 55 to 75% on the same questions.
+- **Full context wins while the history fits.** A 90-day log is 15,000 to
+  20,000 tokens, and a model that reasons before answering adds it up well.
+  The `long` size, a year per person, is where that should stop holding; it
+  hasn't been run yet.
+- **Open Mate loses most where its own tables are wrong.** Reading the tables
+  it built shows schemas missing a column the questions need (an expenses
+  table with no category), sets and weights kept as free text, retracted
+  entries left in, and small talk turned into tables. Its ingestion also costs
+  far more: about 18,000 prompt tokens per model call and two calls per
+  logged message.
+
+Not yet run: the other 8 `standard` people, the `long` size, and a second
+answer model.
 
 ## Quick start
 
