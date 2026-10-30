@@ -1,19 +1,19 @@
 # LedgerBench long preview
 
-Seed 2026, version 1.0, generated 2026-10-30. This page shows one user; the JSON has 6.
+Seed 2026, version 1.1, generated 2026-10-30. This page shows one user; the JSON has 6.
 
 ```
 long: 6 users, 360 questions
 
               lookup aggregate     group    window     state     as_of    change correctio     cross adherence    budget  questions
 spending          13        53         9        23        22         7        21        30         .         .        10        127
-food              14        26         4         7         6         6        10        20         .         9         .         74
+food              14        26         4         7         6         6        10        19         .         9         .         74
 training          15        28         2        13         9         9         8        12         .         5         .         74
 body              10        27         8        12         2         4         8         9         .         .         .         59
 cross              .        26         .         .         .         .         .         6        26         .         .         26
 
 answer types: number 254 (70.6%), count 52 (14.4%), category 28 (7.8%), date 12 (3.3%), set 10 (2.8%), text 4 (1.1%)
-correction-flagged: 77 (21.4%)   cross: 26 (7.2%)
+correction-flagged: 76 (21.1%)   cross: 26 (7.2%)
 messages per user: 1664-2495 (mean 2030, total 12177); events per user: 1715-3178 (total 14937)
 logged records 13246: corrections 397 (3.0%), retractions 132 (1.0%)
 logged late: 1206 (9.1%)

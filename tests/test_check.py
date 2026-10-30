@@ -119,3 +119,48 @@ def test_checker_shares_no_code_with_the_builders() -> None:
         elif isinstance(node, ast.ImportFrom):
             imported.add((node.module or "").split(".")[0])
     assert "ledgerbench" not in imported, imported
+
+
+def test_a_whole_month_past_the_log_is_caught(mini: dict) -> None:
+    data = copy.deepcopy(mini)
+    q = next(q for u in data["users"] for q in u["questions"] if "so far in " in q["question"])
+    q["question"] = q["question"].replace("so far in ", "in ", 1).split(" (1 ", 1)[0] + "?"
+    with pytest.raises(CheckError, match=f"{q['id']}: names .* as a whole month"):
+        check(data)
+
+
+def test_the_partial_month_wording_must_name_the_right_days(mini: dict) -> None:
+    data = copy.deepcopy(mini)
+    q = next(q for u in data["users"] for q in u["questions"] if "so far in " in q["question"])
+    q["question"] = q["question"].replace(" (1 to ", " (1 to 3", 1)
+    with pytest.raises(CheckError, match="as a whole month"):
+        check(data)
+
+
+def test_rent_mentioned_without_rent_in_the_period_is_caught(mini: dict) -> None:
+    data = copy.deepcopy(mini)
+    for u in data["users"]:
+        rents = {e["date"] for e in u["events"] if e["type"] == "expense" and e.get("category") == "rent"}
+        for q in u["questions"]:
+            d = q["derivation"]
+            if q["answer_type"] == "number" and "from" in d and not any(d["from"] <= r <= d["to"] for r in rents):
+                q["question"] = q["question"].replace("?", ", rent included?")
+                with pytest.raises(CheckError, match=f"{q['id']}: mentions rent"):
+                    check(data)
+                return
+    pytest.skip("every period in mini holds rent")
+
+
+def test_an_alias_naming_another_choice_is_caught_plurals_aside(mini: dict) -> None:
+    data = copy.deepcopy(mini)
+    q, other = next(
+        (q, c)
+        for u in data["users"]
+        for q in u["questions"]
+        if q["answer_type"] == "category"
+        for c in q["choices"]
+        if c != q["gold"] and not c.endswith("s")
+    )
+    q["aliases"].append(other + "s")  # "front squats" for "front squat"
+    with pytest.raises(CheckError, match="overlaps the choice"):
+        check(data)

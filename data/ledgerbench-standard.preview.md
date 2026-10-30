@@ -1,6 +1,6 @@
 # LedgerBench standard preview
 
-Seed 2026, version 1.0, generated 2026-10-30. This page shows one user; the JSON has 12.
+Seed 2026, version 1.1, generated 2026-10-30. This page shows one user; the JSON has 12.
 
 ```
 standard: 12 users, 480 questions
@@ -160,7 +160,7 @@ Tracks spending, food, training, body. Profile: I'm Owen, an architect in Chicag
 - evidence (166): u1:e78, u1:e80, u1:e81, u1:e82, u1:e85, u1:e88, u1:e90, u1:e91, u1:e93, u1:e97, u1:e98, u1:e99 ...
 - derivation: `{"op": "diff", "left": {"op": "avg", "type": "meal", "from": "2026-03-01", "to": "2026-03-31", "field": "items.*.kcal", "per": "date"}, "right": {"op": "avg", "type": "meal", "from": "2026-02-01", "to": "2026-02-28", "field": "items.*.kcal", "per": "date"}, "round": 1, "after": ["corrections", "retractions"]}`
 
-**u1:q22** (cross; cross, aggregate; number): How much did I spend on coffee (coffee and pastries at cafés) in April 2026 on days after a night of under 7 hours' sleep (the sleep I logged that morning)?
+**u1:q22** (cross; cross, aggregate; number): How much did I spend on coffee (coffee and pastries at cafés) so far in April 2026 (1 to 21 April) on days after a night of under 7 hours' sleep (the sleep I logged that morning)?
 
 - gold: `14.36` (14.36 USD)
 - evidence (9): u1:e524, u1:e525, u1:e551, u1:e552, u1:e575, u1:e585, u1:e621, u1:e629, u1:e639

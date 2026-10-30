@@ -1,6 +1,6 @@
 {
  "name": "LedgerBench",
- "version": "1.0",
+ "version": "1.1",
  "size": "long",
  "seed": 2026,
  "generated_on": "2026-10-30",
@@ -5364,7 +5364,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in the week from Monday 26 May to Sunday 1 June 2025?",
+     "question": "Which spending category did I spend the most on in the week from Monday 26 May to Sunday 1 June 2025?",
      "answer_type": "category",
      "gold": "groceries",
      "unit": null,
@@ -5766,7 +5766,7 @@
      "skills": [
       "as_of"
      ],
-     "question": "What was my prescription for back squat on my plan on 13 February 2025: sets, reps and weight?",
+     "question": "What was my prescription for back squat on my plan on 13 February 2025, as things stood that day, before any change I had announced took effect: sets, reps and weight?",
      "answer_type": "text",
      "gold": "5x5 at 75 kg",
      "unit": null,
@@ -6707,7 +6707,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent and coffee, in which spending category did I make the most purchases in the week from Monday 19 to Sunday 25 January 2026, counting purchases rather than money?",
+     "question": "Apart from coffee, in which spending category did I make the most purchases in the week from Monday 19 to Sunday 25 January 2026, counting purchases rather than money?",
      "answer_type": "category",
      "gold": "eating out",
      "unit": null,
@@ -48909,7 +48909,7 @@
       "window",
       "aggregate"
      ],
-     "question": "How much did I spend on eating out (restaurants, takeaway and lunches out, not coffee) on weekdays (Monday to Friday) in January 2026?",
+     "question": "How much did I spend on eating out (restaurants, takeaway and lunches out, not coffee) on weekdays (Monday to Friday) so far in January 2026 (1 to 9 January)?",
      "answer_type": "number",
      "gold": 80.35,
      "unit": "USD",
@@ -50066,7 +50066,7 @@
      "skills": [
       "as_of"
      ],
-     "question": "On which days of the week was I scheduled to do pull sessions on 27 April 2025, by my training plan?",
+     "question": "On which days of the week was I scheduled to do pull sessions on 27 April 2025, by my training plan, as things stood that day, before any change I had announced took effect?",
      "answer_type": "set",
      "gold": [
       "Wednesday",
@@ -87552,27 +87552,54 @@
       "change",
       "correction"
      ],
-     "question": "How much more did I spend on transport (taxis, transit and fuel, not trip travel) in May 2025 than in April 2025?",
+     "question": "How much more did I spend on coffee (coffee and pastries at cafés) in October 2025 than in September 2025?",
      "answer_type": "number",
-     "gold": 85.7,
+     "gold": 18.06,
      "unit": "GBP",
      "rel_tol": 0.01,
      "abs_tol": 0.005,
-     "gold_text": "85.7 GBP",
+     "gold_text": "18.06 GBP",
      "aliases": [],
      "choices": [],
      "asked_on": "2026-03-15",
      "evidence": [
-      "u3:e170",
-      "u3:e245",
-      "u3:e321",
-      "u3:e376",
-      "u3:e440",
-      "u3:e477",
-      "u3:e499",
-      "u3:e516",
-      "u3:e525",
-      "u3:e543"
+      "u3:e1276",
+      "u3:e1304",
+      "u3:e1312",
+      "u3:e1319",
+      "u3:e1340",
+      "u3:e1353",
+      "u3:e1355",
+      "u3:e1362",
+      "u3:e1381",
+      "u3:e1390",
+      "u3:e1412",
+      "u3:e1419",
+      "u3:e1427",
+      "u3:e1434",
+      "u3:e1441",
+      "u3:e1476",
+      "u3:e1486",
+      "u3:e1495",
+      "u3:e1498",
+      "u3:e1522",
+      "u3:e1546",
+      "u3:e1547",
+      "u3:e1553",
+      "u3:e1567",
+      "u3:e1576",
+      "u3:e1582",
+      "u3:e1590",
+      "u3:e1592",
+      "u3:e1603",
+      "u3:e1614",
+      "u3:e1626",
+      "u3:e1637",
+      "u3:e1671",
+      "u3:e1686",
+      "u3:e1694",
+      "u3:e1701",
+      "u3:e1714"
      ],
      "derivation": {
       "op": "diff",
@@ -87580,10 +87607,10 @@
        "op": "sum",
        "type": "expense",
        "where": {
-        "category": "transport"
+        "category": "coffee"
        },
-       "from": "2025-05-01",
-       "to": "2025-05-31",
+       "from": "2025-10-01",
+       "to": "2025-10-31",
        "net_refunds": true,
        "field": "amount"
       },
@@ -87591,10 +87618,10 @@
        "op": "sum",
        "type": "expense",
        "where": {
-        "category": "transport"
+        "category": "coffee"
        },
-       "from": "2025-04-01",
-       "to": "2025-04-30",
+       "from": "2025-09-01",
+       "to": "2025-09-30",
        "net_refunds": true,
        "field": "amount"
       },
@@ -87679,7 +87706,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent and coffee, in which spending category did I make the most purchases between 8 and 18 November 2025 inclusive, counting purchases rather than money?",
+     "question": "Apart from coffee, in which spending category did I make the most purchases between 8 and 18 November 2025 inclusive, counting purchases rather than money?",
      "answer_type": "category",
      "gold": "eating out",
      "unit": null,
@@ -88317,24 +88344,24 @@
      "skills": [
       "lookup"
      ],
-     "question": "What did I weigh on 22 July 2025, in kg?",
+     "question": "What did I weigh on 17 August 2025, in kg?",
      "answer_type": "number",
-     "gold": 82.7,
+     "gold": 82.9,
      "unit": "kg",
      "rel_tol": 0.01,
      "abs_tol": 0.05,
-     "gold_text": "82.7 kg",
+     "gold_text": "82.9 kg",
      "aliases": [],
      "choices": [],
      "asked_on": "2026-03-15",
      "evidence": [
-      "u3:e942"
+      "u3:e1124"
      ],
      "derivation": {
       "op": "lookup",
       "type": "weight",
-      "from": "2025-07-22",
-      "to": "2025-07-22",
+      "from": "2025-08-17",
+      "to": "2025-08-17",
       "field": "value",
       "round": 1,
       "after": [
@@ -88395,17 +88422,17 @@
      "skills": [
       "group"
      ],
-     "question": "Which day of the week had my highest average sleep (by the morning I logged it) in December 2025?",
+     "question": "Which day of the week had my highest average step count in January 2026?",
      "answer_type": "category",
-     "gold": "Wednesday",
+     "gold": "Saturday",
      "unit": null,
      "rel_tol": null,
      "abs_tol": null,
-     "gold_text": "Wednesday",
+     "gold_text": "Saturday",
      "aliases": [
-      "Wednesday",
-      "Wednesdays",
-      "Wed"
+      "Saturday",
+      "Saturdays",
+      "Sat"
      ],
      "choices": [
       "Monday",
@@ -88418,43 +88445,29 @@
      ],
      "asked_on": "2026-03-15",
      "evidence": [
-      "u3:e1925",
-      "u3:e1931",
-      "u3:e1944",
-      "u3:e1949",
-      "u3:e1953",
-      "u3:e1961",
-      "u3:e1969",
-      "u3:e1977",
-      "u3:e1985",
-      "u3:e1991",
-      "u3:e1998",
-      "u3:e2014",
-      "u3:e2021",
-      "u3:e2025",
-      "u3:e2036",
-      "u3:e2040",
-      "u3:e2045",
-      "u3:e2057",
-      "u3:e2063",
-      "u3:e2071",
-      "u3:e2078",
-      "u3:e2085",
-      "u3:e2091",
-      "u3:e2103",
-      "u3:e2113",
-      "u3:e2120",
-      "u3:e2126",
-      "u3:e2137"
+      "u3:e2149",
+      "u3:e2168",
+      "u3:e2175",
+      "u3:e2186",
+      "u3:e2220",
+      "u3:e2241",
+      "u3:e2266",
+      "u3:e2284",
+      "u3:e2290",
+      "u3:e2298",
+      "u3:e2323",
+      "u3:e2330",
+      "u3:e2335",
+      "u3:e2354"
      ],
      "derivation": {
       "op": "top",
-      "type": "sleep_hours",
+      "type": "steps",
       "by": "weekday",
       "measure": "avg",
       "field": "value",
-      "from": "2025-12-01",
-      "to": "2025-12-31",
+      "from": "2026-01-01",
+      "to": "2026-01-31",
       "margin": {
        "rel": 0.05
       },
@@ -88574,25 +88587,25 @@
      "skills": [
       "as_of"
      ],
-     "question": "What was my monthly budget for groceries on 1 August 2025?",
+     "question": "How much was I paying each month for the internet on 10 July 2025?",
      "answer_type": "number",
-     "gold": 390.0,
+     "gold": 32.0,
      "unit": "GBP",
      "rel_tol": 0.01,
      "abs_tol": 0.005,
-     "gold_text": "390 GBP",
+     "gold_text": "32 GBP",
      "aliases": [],
      "choices": [],
      "asked_on": "2026-03-15",
      "evidence": [
-      "u3:e967"
+      "u3:e20"
      ],
      "derivation": {
       "op": "as_of",
-      "on": "2025-08-01",
+      "on": "2025-07-10",
       "of": {
-       "kind": "budget",
-       "category": "groceries"
+       "kind": "recurring",
+       "name": "the internet"
       },
       "round": 2,
       "after": [
@@ -88640,7 +88653,7 @@
      "skills": [
       "budget"
      ],
-     "question": "How much of my groceries budget for March 2026 is left, as of 15 March 2026?",
+     "question": "How much of my monthly groceries budget is left, going by my spending so far in March 2026 (1 to 15 March)?",
      "answer_type": "number",
      "gold": 44.91,
      "unit": "GBP",
@@ -89481,7 +89494,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was my average resting heart rate in March 2026, counting only the days I logged it?",
+     "question": "What was my average resting heart rate so far in March 2026 (1 to 15 March), counting only the days I logged it?",
      "answer_type": "number",
      "gold": 58.0,
      "unit": "bpm",
@@ -90137,75 +90150,35 @@
      "id": "u3:q59",
      "domain": "food",
      "skills": [
-      "adherence",
-      "correction"
+      "adherence"
      ],
-     "question": "On how many days in September 2025 did I go over my calorie target (the target in force that day), counting only days I logged food?",
+     "question": "On how many days in the week from Monday 5 to Sunday 11 January 2026 did I go over my calorie target (the target in force that day), counting only days I logged food?",
      "answer_type": "count",
-     "gold": 13,
+     "gold": 3,
      "unit": "days",
      "rel_tol": 0.0,
      "abs_tol": 0.0,
-     "gold_text": "13 days",
+     "gold_text": "3 days",
      "aliases": [],
      "choices": [],
      "asked_on": "2026-03-15",
      "evidence": [
-      "u3:e1244",
-      "u3:e1245",
-      "u3:e1246",
-      "u3:e1247",
-      "u3:e1278",
-      "u3:e1283",
-      "u3:e1284",
-      "u3:e1285",
-      "u3:e1286",
-      "u3:e1289",
-      "u3:e1290",
-      "u3:e1306",
-      "u3:e1307",
-      "u3:e1308",
-      "u3:e1328",
-      "u3:e1329",
-      "u3:e1330",
-      "u3:e1339",
-      "u3:e1347",
-      "u3:e1348",
-      "u3:e1354",
-      "u3:e1365",
-      "u3:e1366",
-      "u3:e1367",
-      "u3:e1368",
-      "u3:e1369",
-      "u3:e1373",
-      "u3:e1395",
-      "u3:e1405",
-      "u3:e1406",
-      "u3:e1407",
-      "u3:e1408",
-      "u3:e1411",
-      "u3:e1415",
-      "u3:e1416",
-      "u3:e1426",
-      "u3:e1429",
-      "u3:e1430",
-      "u3:e1433",
-      "u3:e1435",
-      "u3:e1436",
-      "u3:e1437",
-      "u3:e1470",
-      "u3:e1471",
-      "u3:e1472",
-      "u3:e1478",
-      "u3:e1479",
-      "u3:e1480",
-      "u3:e1550"
+      "u3:e2199",
+      "u3:e2201",
+      "u3:e2202",
+      "u3:e2203",
+      "u3:e2210",
+      "u3:e2211",
+      "u3:e2213",
+      "u3:e2221",
+      "u3:e2222",
+      "u3:e2223"
      ],
      "derivation": {
       "op": "count_days",
       "type": "meal",
-      "from": "2025-09-01",
-      "to": "2025-09-30",
+      "from": "2026-01-05",
+      "to": "2026-01-11",
       "days": {
        "over_target": {
         "type": "meal",
@@ -132136,7 +132109,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in the week from Monday 12 to Sunday 18 May 2025?",
+     "question": "Which spending category did I spend the most on in the week from Monday 12 to Sunday 18 May 2025?",
      "answer_type": "category",
      "gold": "utilities",
      "unit": null,
@@ -133090,7 +133063,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On what date was my single biggest expense in the week from Monday 17 to Sunday 23 November 2025, apart from rent?",
+     "question": "On what date was my single biggest expense in the week from Monday 17 to Sunday 23 November 2025?",
      "answer_type": "date",
      "gold": "2025-11-17",
      "unit": null,
@@ -190983,7 +190956,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "Apart from rent, what was my single biggest expense in the week from Monday 26 January to Sunday 1 February 2026, before any refunds?",
+     "question": "What was my single biggest expense in the week from Monday 26 January to Sunday 1 February 2026, before any refunds?",
      "answer_type": "number",
      "gold": 58.42,
      "unit": "USD",
@@ -192753,7 +192726,7 @@
       "aggregate",
       "correction"
      ],
-     "question": "How much did I spend in total, every category and rent included, in the week from Monday 3 to Sunday 9 March 2025?",
+     "question": "How much did I spend in total, every category included, in the week from Monday 3 to Sunday 9 March 2025?",
      "answer_type": "number",
      "gold": 261.08,
      "unit": "USD",
@@ -193117,7 +193090,7 @@
       "aggregate",
       "correction"
      ],
-     "question": "How much did I spend on coffee (coffee and pastries at cafés) on weekdays (Monday to Friday) in February 2026?",
+     "question": "How much did I spend on coffee (coffee and pastries at cafés) on weekdays (Monday to Friday) so far in February 2026 (1 to 25 February)?",
      "answer_type": "number",
      "gold": 39.43,
      "unit": "USD",
@@ -193442,7 +193415,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was my average daily protein intake in grams in February 2026, counting only days I logged food?",
+     "question": "What was my average daily protein intake in grams so far in February 2026 (1 to 25 February), counting only days I logged food?",
      "answer_type": "number",
      "gold": 91.0,
      "unit": "g",
@@ -194196,7 +194169,7 @@
      "skills": [
       "as_of"
      ],
-     "question": "Which session was on my training plan for Fridays on 14 October 2025? Say Rest if it was a rest day.",
+     "question": "Which session was on my training plan for Fridays on 14 October 2025, as things stood that day, before any change I had announced took effect? Say Rest if it was a rest day.",
      "answer_type": "category",
      "gold": "Lower",
      "unit": null,
@@ -245461,7 +245434,7 @@
      "skills": [
       "group"
      ],
-     "question": "Which kind of training session did I do most often between 14 February and 1 March 2025 inclusive, counting runs as Run sessions?",
+     "question": "Which kind of training session did I do most often between 14 February and 1 March 2025 inclusive?",
      "answer_type": "category",
      "gold": "Lower",
      "unit": null,
@@ -246727,7 +246700,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "Apart from rent, what was my single biggest expense in January 2026, before any refunds?",
+     "question": "Apart from rent, what was my single biggest expense so far in January 2026 (1 to 30 January), before any refunds?",
      "answer_type": "number",
      "gold": 81.76,
      "unit": "GBP",
@@ -247117,7 +247090,7 @@
      "skills": [
       "change"
      ],
-     "question": "How much weight did I lose in January 2026, from my first weigh-in in that period to my last, in kg?",
+     "question": "How much weight did I lose so far in January 2026 (1 to 30 January), from my first weigh-in in that period to my last, in kg?",
      "answer_type": "number",
      "gold": 1.2,
      "unit": "kg",

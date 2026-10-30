@@ -1,6 +1,6 @@
 {
  "name": "LedgerBench",
- "version": "1.0",
+ "version": "1.1",
  "size": "standard",
  "seed": 2026,
  "generated_on": "2026-10-30",
@@ -1797,7 +1797,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was my highest weight in April 2026, in lb?",
+     "question": "What was my highest weight so far in April 2026 (1 to 21 April), in lb?",
      "answer_type": "number",
      "gold": 183.8,
      "unit": "lb",
@@ -1837,7 +1837,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On how many nights in April 2026 did I log my sleep?",
+     "question": "On how many nights so far in April 2026 (1 to 21 April) did I log my sleep?",
      "answer_type": "count",
      "gold": 14,
      "unit": "nights",
@@ -2222,7 +2222,7 @@
      "skills": [
       "as_of"
      ],
-     "question": "What was my daily calorie target on 5 March 2026?",
+     "question": "What was my daily calorie target on 5 March 2026, as things stood that day, before any change I had announced took effect?",
      "answer_type": "number",
      "gold": 2100.0,
      "unit": "kcal",
@@ -2299,7 +2299,7 @@
       "cross",
       "aggregate"
      ],
-     "question": "How much did I spend on coffee (coffee and pastries at cafés) in April 2026 on days after a night of under 7 hours' sleep (the sleep I logged that morning)?",
+     "question": "How much did I spend on coffee (coffee and pastries at cafés) so far in April 2026 (1 to 21 April) on days after a night of under 7 hours' sleep (the sleep I logged that morning)?",
      "answer_type": "number",
      "gold": 14.36,
      "unit": "USD",
@@ -2868,7 +2868,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How many working sets of deadlift did I do in total in April 2026?",
+     "question": "How many working sets of deadlift did I do in total so far in April 2026 (1 to 21 April)?",
      "answer_type": "count",
      "gold": 12,
      "unit": "sets",
@@ -16832,7 +16832,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was the heaviest weight I lifted for bench press in May 2026, in kg?",
+     "question": "What was the heaviest weight I lifted for bench press so far in May 2026 (1 to 17 May), in kg?",
      "answer_type": "number",
      "gold": 87.5,
      "unit": "kg",
@@ -16872,7 +16872,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in the week from Monday 23 to Sunday 29 March 2026?",
+     "question": "Which spending category did I spend the most on in the week from Monday 23 to Sunday 29 March 2026?",
      "answer_type": "category",
      "gold": "groceries",
      "unit": null,
@@ -17724,7 +17724,7 @@
       "budget",
       "correction"
      ],
-     "question": "How much of my eating-out budget for May 2026 is left, as of 17 May 2026? Count everything that is eating out (restaurants, takeaway and lunches out, not coffee) against it.",
+     "question": "How much of my monthly eating-out budget is left, going by my spending so far in May 2026 (1 to 17 May)? Count everything that is eating out (restaurants, takeaway and lunches out, not coffee) against it.",
      "answer_type": "number",
      "gold": 86.26,
      "unit": "GBP",
@@ -18091,7 +18091,9 @@
      "gold_text": "barbell row",
      "aliases": [
       "barbell row",
-      "BB row"
+      "BB row",
+      "BB rows",
+      "barbell rows"
      ],
      "choices": [
       "back squat",
@@ -18578,7 +18580,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in May 2026?",
+     "question": "Apart from rent, which spending category did I spend the most on so far in May 2026 (1 to 17 May)?",
      "answer_type": "category",
      "gold": "eating out",
      "unit": null,
@@ -19149,7 +19151,7 @@
       "aggregate",
       "correction"
      ],
-     "question": "How many times did I buy coffee in May 2026?",
+     "question": "How many times did I buy coffee so far in May 2026 (1 to 17 May)?",
      "answer_type": "count",
      "gold": 10,
      "unit": "times",
@@ -37301,7 +37303,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On what date was my single biggest expense in May 2026, apart from rent?",
+     "question": "On what date was my single biggest expense so far in May 2026 (1 to 7 May), apart from rent?",
      "answer_type": "date",
      "gold": "2026-05-05",
      "unit": null,
@@ -37475,7 +37477,7 @@
      "skills": [
       "group"
      ],
-     "question": "Which kind of training session did I do most often between 17 April and 7 May 2026 inclusive, counting runs as Run sessions?",
+     "question": "Which kind of training session did I do most often between 17 April and 7 May 2026 inclusive?",
      "answer_type": "category",
      "gold": "Push",
      "unit": null,
@@ -50583,7 +50585,7 @@
      "skills": [
       "group"
      ],
-     "question": "Which kind of training session did I do most often between 12 and 26 March 2026 inclusive, counting runs as Run sessions?",
+     "question": "Which kind of training session did I do most often between 12 and 26 March 2026 inclusive?",
      "answer_type": "category",
      "gold": "Upper",
      "unit": null,
@@ -50908,7 +50910,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How many working sets of bench press did I do in total in April 2026?",
+     "question": "How many working sets of bench press did I do in total so far in April 2026 (1 to 23 April)?",
      "answer_type": "count",
      "gold": 24,
      "unit": "sets",
@@ -51301,7 +51303,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was my average sleep per night in hours in April 2026, counting only the nights I logged it?",
+     "question": "What was my average sleep per night in hours so far in April 2026 (1 to 23 April), counting only the nights I logged it?",
      "answer_type": "number",
      "gold": 7.6,
      "unit": "hours",
@@ -51872,7 +51874,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On what date was my single biggest expense in the week from Monday 30 March to Sunday 5 April 2026, apart from rent?",
+     "question": "On what date was my single biggest expense in the week from Monday 30 March to Sunday 5 April 2026?",
      "answer_type": "date",
      "gold": "2026-04-04",
      "unit": null,
@@ -61364,7 +61366,7 @@
      "skills": [
       "group"
      ],
-     "question": "Which meal of the day (breakfast, lunch, dinner or snacks) gave me the most calories in total in May 2026?",
+     "question": "Which meal of the day (breakfast, lunch, dinner or snacks) gave me the most calories in total so far in May 2026 (1 to 6 May)?",
      "answer_type": "category",
      "gold": "dinner",
      "unit": null,
@@ -61894,7 +61896,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in May 2026?",
+     "question": "Apart from rent, which spending category did I spend the most on so far in May 2026 (1 to 6 May)?",
      "answer_type": "category",
      "gold": "groceries",
      "unit": null,
@@ -62338,7 +62340,7 @@
      "skills": [
       "lookup"
      ],
-     "question": "On what date did my rent go out in May 2026?",
+     "question": "On what date did my rent go out so far in May 2026 (1 to 6 May)?",
      "answer_type": "date",
      "gold": "2026-05-01",
      "unit": null,
@@ -79002,7 +79004,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On which day in May 2026 did I log my highest calorie total?",
+     "question": "On which day so far in May 2026 (1 to 3 May) did I log my highest calorie total?",
      "answer_type": "date",
      "gold": "2026-05-02",
      "unit": null,
@@ -79080,7 +79082,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in May 2026?",
+     "question": "Apart from rent, which spending category did I spend the most on so far in May 2026 (1 to 3 May)?",
      "answer_type": "category",
      "gold": "groceries",
      "unit": null,
@@ -80719,7 +80721,7 @@
      "skills": [
       "lookup"
      ],
-     "question": "On what date did my rent go out in May 2026?",
+     "question": "On what date did my rent go out so far in May 2026 (1 to 3 May)?",
      "answer_type": "date",
      "gold": "2026-05-01",
      "unit": null,
@@ -91657,7 +91659,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How much did I spend in total, every category and rent included, in April 2026?",
+     "question": "How much did I spend in total, every category and rent included, so far in April 2026 (1 to 14 April)?",
      "answer_type": "number",
      "gold": 1737.28,
      "unit": "USD",
@@ -91715,7 +91717,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in April 2026?",
+     "question": "Apart from rent, which spending category did I spend the most on so far in April 2026 (1 to 14 April)?",
      "answer_type": "category",
      "gold": "household",
      "unit": null,
@@ -92270,7 +92272,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was my shortest night of sleep in April 2026, in hours?",
+     "question": "What was my shortest night of sleep so far in April 2026 (1 to 14 April), in hours?",
      "answer_type": "number",
      "gold": 5.75,
      "unit": "hours",
@@ -92398,7 +92400,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "Apart from rent, what was my single biggest expense in April 2026, before any refunds?",
+     "question": "Apart from rent, what was my single biggest expense so far in April 2026 (1 to 14 April), before any refunds?",
      "answer_type": "number",
      "gold": 108.53,
      "unit": "USD",
@@ -103433,25 +103435,25 @@
      "skills": [
       "as_of"
      ],
-     "question": "What was my daily calorie target on 23 March 2026?",
+     "question": "What was my daily protein target on 16 January 2026, in grams?",
      "answer_type": "number",
-     "gold": 1950.0,
-     "unit": "kcal",
+     "gold": 115.0,
+     "unit": "g",
      "rel_tol": 0.01,
      "abs_tol": 0.5,
-     "gold_text": "1950 kcal",
+     "gold_text": "115 g",
      "aliases": [],
      "choices": [],
      "asked_on": "2026-04-09",
      "evidence": [
-      "u8:e556"
+      "u8:e12"
      ],
      "derivation": {
       "op": "as_of",
-      "on": "2026-03-23",
+      "on": "2026-01-16",
       "of": {
        "kind": "target",
-       "type": "kcal_target"
+       "type": "protein_target"
       },
       "round": 0,
       "after": [
@@ -103747,7 +103749,7 @@
       "aggregate",
       "correction"
      ],
-     "question": "How much did I spend in total, every category and rent included, in the week from Monday 19 to Sunday 25 January 2026?",
+     "question": "How much did I spend in total, every category included, in the week from Monday 19 to Sunday 25 January 2026?",
      "answer_type": "number",
      "gold": 225.85,
      "unit": "GBP",
@@ -104020,7 +104022,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How many times did I buy coffee in April 2026?",
+     "question": "How many times did I buy coffee so far in April 2026 (1 to 9 April)?",
      "answer_type": "count",
      "gold": 6,
      "unit": "times",
@@ -104058,7 +104060,7 @@
      "skills": [
       "group"
      ],
-     "question": "Which exercise did I do the most working sets of in April 2026?",
+     "question": "Which exercise did I do the most working sets of so far in April 2026 (1 to 9 April)?",
      "answer_type": "category",
      "gold": "back squat",
      "unit": null,
@@ -104066,7 +104068,10 @@
      "abs_tol": null,
      "gold_text": "back squat",
      "aliases": [
-      "back squat"
+      "back squat",
+      "back squats",
+      "squats",
+      "squat"
      ],
      "choices": [
       "back squat",
@@ -104112,7 +104117,7 @@
      "skills": [
       "budget"
      ],
-     "question": "How much of my coffee budget for April 2026 is left, as of 9 April 2026? Count everything that is coffee (coffee and pastries at cafés) against it.",
+     "question": "How much of my monthly coffee budget is left, going by my spending so far in April 2026 (1 to 9 April)? Count everything that is coffee (coffee and pastries at cafés) against it.",
      "answer_type": "number",
      "gold": 52.76,
      "unit": "GBP",
@@ -104165,7 +104170,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On what date was my single biggest expense in the week from Monday 16 to Sunday 22 February 2026, apart from rent?",
+     "question": "On what date was my single biggest expense in the week from Monday 16 to Sunday 22 February 2026?",
      "answer_type": "date",
      "gold": "2026-02-16",
      "unit": null,
@@ -104602,7 +104607,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was my lowest weight in April 2026, in lb?",
+     "question": "What was my lowest weight so far in April 2026 (1 to 9 April), in lb?",
      "answer_type": "number",
      "gold": 189.0,
      "unit": "lb",
@@ -104674,25 +104679,26 @@
      "skills": [
       "as_of"
      ],
-     "question": "What was my monthly budget for coffee on 23 March 2026?",
+     "question": "How much was I paying each month for iCloud on 22 March 2026?",
      "answer_type": "number",
-     "gold": 50.0,
+     "gold": 5.99,
      "unit": "GBP",
      "rel_tol": 0.01,
      "abs_tol": 0.005,
-     "gold_text": "50 GBP",
+     "gold_text": "5.99 GBP",
      "aliases": [],
      "choices": [],
      "asked_on": "2026-04-09",
      "evidence": [
-      "u8:e29"
+      "u8:e13",
+      "u8:e342"
      ],
      "derivation": {
       "op": "as_of",
-      "on": "2026-03-23",
+      "on": "2026-03-22",
       "of": {
-       "kind": "budget",
-       "category": "coffee"
+       "kind": "recurring",
+       "name": "iCloud"
       },
       "round": 2,
       "after": [
@@ -105274,7 +105280,7 @@
       "cross",
       "aggregate"
      ],
-     "question": "What was my average daily calorie intake in April 2026 on days after a night of under 7 hours' sleep (the sleep I logged that morning), counting only days I logged food?",
+     "question": "What was my average daily calorie intake so far in April 2026 (1 to 9 April) on days after a night of under 7 hours' sleep (the sleep I logged that morning), counting only days I logged food?",
      "answer_type": "number",
      "gold": 2759.3,
      "unit": "kcal",
@@ -105337,7 +105343,10 @@
      "abs_tol": null,
      "gold_text": "back squat",
      "aliases": [
-      "back squat"
+      "back squat",
+      "back squats",
+      "squats",
+      "squat"
      ],
      "choices": [
       "back squat",
@@ -122064,7 +122073,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "Apart from rent, what was my single biggest expense in the week from Monday 2 to Sunday 8 March 2026, before any refunds?",
+     "question": "What was my single biggest expense in the week from Monday 2 to Sunday 8 March 2026, before any refunds?",
      "answer_type": "number",
      "gold": 95.85,
      "unit": "EUR",
@@ -123699,7 +123708,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On what date was my single biggest expense in the week from Monday 9 to Sunday 15 February 2026, apart from rent?",
+     "question": "On what date was my single biggest expense in the week from Monday 9 to Sunday 15 February 2026?",
      "answer_type": "date",
      "gold": "2026-02-13",
      "unit": null,
@@ -123827,7 +123836,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On what date was my single biggest expense in May 2026, apart from rent?",
+     "question": "On what date was my single biggest expense so far in May 2026 (1 to 4 May), apart from rent?",
      "answer_type": "date",
      "gold": "2026-05-01",
      "unit": null,
@@ -131675,7 +131684,7 @@
      "skills": [
       "budget"
      ],
-     "question": "How much of my eating-out budget for May 2026 is left, as of 11 May 2026? Count everything that is eating out (restaurants, takeaway and lunches out, not coffee) against it.",
+     "question": "How much of my monthly eating-out budget is left, going by my spending so far in May 2026 (1 to 11 May)? Count everything that is eating out (restaurants, takeaway and lunches out, not coffee) against it.",
      "answer_type": "number",
      "gold": 374.62,
      "unit": "USD",
@@ -131806,7 +131815,8 @@
        "veggie chilli"
       ],
       "chicken curry": [
-       "chicken curry"
+       "chicken curry",
+       "chicken curries"
       ]
      },
      "choices": [
@@ -132026,7 +132036,7 @@
       "aggregate",
       "correction"
      ],
-     "question": "How many times did I buy coffee in May 2026?",
+     "question": "How many times did I buy coffee so far in May 2026 (1 to 11 May)?",
      "answer_type": "count",
      "gold": 8,
      "unit": "times",
@@ -132493,7 +132503,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On what date was my single biggest expense in the week from Monday 23 to Sunday 29 March 2026, apart from rent?",
+     "question": "On what date was my single biggest expense in the week from Monday 23 to Sunday 29 March 2026?",
      "answer_type": "date",
      "gold": "2026-03-23",
      "unit": null,
@@ -142415,7 +142425,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On what date was my single biggest expense in the week from Monday 16 to Sunday 22 March 2026, apart from rent?",
+     "question": "On what date was my single biggest expense in the week from Monday 16 to Sunday 22 March 2026?",
      "answer_type": "date",
      "gold": "2026-03-20",
      "unit": null,
@@ -142465,7 +142475,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "Apart from rent, what was my single biggest expense in May 2026, before any refunds?",
+     "question": "Apart from rent, what was my single biggest expense so far in May 2026 (1 to 13 May), before any refunds?",
      "answer_type": "number",
      "gold": 98.98,
      "unit": "GBP",
@@ -143038,7 +143048,7 @@
      "skills": [
       "change"
      ],
-     "question": "How much weight did I gain in May 2026, from my first weigh-in in that period to my last, in kg?",
+     "question": "How much weight did I gain so far in May 2026 (1 to 13 May), from my first weigh-in in that period to my last, in kg?",
      "answer_type": "number",
      "gold": 0.4,
      "unit": "kg",
@@ -143364,7 +143374,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent and coffee, in which spending category did I make the most purchases in May 2026, counting purchases rather than money?",
+     "question": "Apart from rent and coffee, in which spending category did I make the most purchases so far in May 2026 (1 to 13 May), counting purchases rather than money?",
      "answer_type": "category",
      "gold": "eating out",
      "unit": null,
@@ -143441,7 +143451,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How much did I spend on eating out (restaurants, takeaway and lunches out, not coffee) in May 2026?",
+     "question": "How much did I spend on eating out (restaurants, takeaway and lunches out, not coffee) so far in May 2026 (1 to 13 May)?",
      "answer_type": "number",
      "gold": 160.47,
      "unit": "GBP",
@@ -143811,7 +143821,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on between 20 and 27 March 2026 inclusive?",
+     "question": "Which spending category did I spend the most on between 20 and 27 March 2026 inclusive?",
      "answer_type": "category",
      "gold": "eating out",
      "unit": null,
@@ -144019,7 +144029,7 @@
      "skills": [
       "adherence"
      ],
-     "question": "How many of the sessions on my training plan in May 2026 did I actually do, using the plan in force on each day?",
+     "question": "How many of the sessions on my training plan so far in May 2026 (1 to 13 May) did I actually do, using the plan in force on each day?",
      "answer_type": "count",
      "gold": 8,
      "unit": "sessions",
@@ -144057,7 +144067,7 @@
      "skills": [
       "budget"
      ],
-     "question": "By how much am I over my transport budget for May 2026, as of 13 May 2026? Count everything that is transport (taxis, transit and fuel, not trip travel) against it.",
+     "question": "By how much am I over my monthly transport budget, going by my spending so far in May 2026 (1 to 13 May)? Count everything that is transport (taxis, transit and fuel, not trip travel) against it.",
      "answer_type": "number",
      "gold": 33.68,
      "unit": "GBP",
@@ -152653,7 +152663,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in the week from Monday 13 to Sunday 19 April 2026?",
+     "question": "Which spending category did I spend the most on in the week from Monday 13 to Sunday 19 April 2026?",
      "answer_type": "category",
      "gold": "eating out",
      "unit": null,
@@ -152895,7 +152905,7 @@
      "skills": [
       "budget"
      ],
-     "question": "How much of my eating-out budget for May 2026 is left, as of 9 May 2026? Count everything that is eating out (restaurants, takeaway and lunches out, not coffee) against it.",
+     "question": "How much of my monthly eating-out budget is left, going by my spending so far in May 2026 (1 to 9 May)? Count everything that is eating out (restaurants, takeaway and lunches out, not coffee) against it.",
      "answer_type": "number",
      "gold": 210.4,
      "unit": "EUR",

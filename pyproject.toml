@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ledgerbench"
-version = "1.0.0"
+version = "1.1.0"
 description = "A benchmark for whether an AI assistant's memory can keep the books on a person's life."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,7 +26,9 @@ dependencies = []
 
 [project.optional-dependencies]
 openai = ["openai>=1.60", "numpy>=1.26"]
-mem0 = ["mem0ai==2.2.1", "qdrant-client>=1.12", "openai>=1.60"]
+# mem0ai's nlp extra (spaCy) powers its BM25 lemmatization and entity search;
+# without it Mem0 runs degraded. Then: python -m spacy download en_core_web_sm
+mem0 = ["mem0ai[nlp]==2.2.1", "qdrant-client>=1.12", "openai>=1.60"]
 dev = ["pytest>=8", "ruff>=0.6"]
 
 [project.scripts]

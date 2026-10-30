@@ -1,4 +1,4 @@
-# LedgerBench specification, v1
+# LedgerBench specification, v1.1
 
 LedgerBench measures whether an AI assistant's memory can **keep the books** on
 a person's life: log structured records from casual chat, keep them correct
@@ -136,6 +136,23 @@ explicitly (a named month, an inclusive date range, a weekday, or "now"), so no
 system depends on its own idea of today. `asked_on` is the date of the user's
 last session.
 
+Three wording rules keep a question from meaning two things:
+
+- **A month still running is named as the days it has had.** A question names
+  a whole month ("in March 2026") only when `asked_on` is on or after that
+  month's last day. Otherwise it says "so far in March 2026 (1 to 21 March)".
+- **Nothing is mentioned that the period does not hold.** A question names a
+  category, item or event ("rent included", "apart from rent", "counting runs
+  as Run sessions") only when at least one record of it falls in the period.
+- **"Now" and "on a date" say which value they mean when a change is
+  pending.** When a change to a price, budget, target or plan has been
+  announced but has not taken effect by the day asked about, a `state`
+  question adds "before any announced change takes effect" and an `as_of`
+  question "as things stood that day, before any change I had announced took
+  effect". An `as_of` question is never asked about the day a change takes
+  effect, and a `change` question that compares with "now" is not asked while
+  a change is pending.
+
 Every question has one `domain` (or `cross` for two), one `answer_type`, and
 one or more `skills`:
 
@@ -172,7 +189,18 @@ applies to, `correction` flags at least 10% of questions, and `cross` at least
 `choices` is the closed vocabulary the answer must come from (the 14 spending
 categories, the 7 weekdays, the user's exercise names, the session names), so
 that listing everything is never rewarded. Numbers are parsed with thousands
-separators and currency symbols removed; "1,240" is 1240.
+separators and currency symbols removed; "1,240" is 1240. When `unit` is
+`hours` (or `minutes`), hours and minutes written together are one number:
+"7 hours 45 minutes", "7 hours 45", "7h45", "7h 45m", "7 h 45 min" and "7:45
+hours" are all 7.75 hours.
+
+The `aliases` of a gold that names an exercise or a food carry every form of
+it the user typed in their own messages ("squats", "back squats", "BB rows",
+"deads", "slices of toast"), with the plain singular of each (and a plural
+the scorer cannot form by adding "s" or "es", which it accepts on every term).
+A form that runs word for word, plurals aside, inside another member of
+`choices`, or the other way round, is left out: with both back squat and front
+squat among the choices, neither "squat" nor "squats" is an alias.
 
 `rel_tol` defaults to 0.01 and `abs_tol` to half the precision the answer is
 naturally given in (0.005 for money, 0.5 for kcal, 0.05 for kg); averages use
@@ -195,7 +223,7 @@ explicitly on every numeric question.
 
 ```json
 {
-  "name": "LedgerBench", "version": "1.0", "size": "standard", "seed": 2026,
+  "name": "LedgerBench", "version": "1.1", "size": "standard", "seed": 2026,
   "generated_on": "YYYY-MM-DD",
   "users": [{
     "id": "u1", "name": "Rana", "profile": "...", "currency": "EUR",
@@ -227,7 +255,10 @@ a second implementation that shares no code with the question builders, and
 fails generation on any mismatch. It also asserts: dates consecutive, weekdays
 right, every evidence id exists, every numeric aggregate has its minimum record
 count, no distractor number is within tolerance of a numeric gold, every
-question names its period, and the skill and domain coverage rules in 5.
+question names its period, a question that names a whole month is asked on or
+after that month's last day, a question that mentions rent has a rent payment
+in its period, no alias overlaps another choice (plurals aside), and the skill
+and domain coverage rules in 5.
 
 ## 9. Systems
 

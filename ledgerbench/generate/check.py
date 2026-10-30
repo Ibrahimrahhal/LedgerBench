@@ -442,9 +442,53 @@ class Evaluator:
 # ------------------------------------------------------------------ the checks
 
 
+def _singular(word: str) -> str:
+    if len(word) > 4 and word.endswith("ies"):
+        return word[:-3] + "y"
+    if word.endswith(("sses", "shes", "ches", "xes")):
+        return word[:-2]
+    if len(word) > 3 and word.endswith("s") and not word.endswith("ss"):
+        return word[:-1]
+    return word
+
+
 def _contains(outer: str, inner: str) -> bool:
-    a, b = re.findall(r"[a-z0-9]+", outer.lower()), re.findall(r"[a-z0-9]+", inner.lower())
+    """`inner`'s words run inside `outer`'s, plurals aside ('front squat' contains 'squats')."""
+    a = [_singular(w) for w in re.findall(r"[a-z0-9]+", outer.lower())]
+    b = [_singular(w) for w in re.findall(r"[a-z0-9]+", inner.lower())]
     return bool(b) and any(a[i : i + len(b)] == b for i in range(len(a) - len(b) + 1))
+
+
+_BARE_MONTH = re.compile(r"(?<!\d )\b(?P<month>" + "|".join(MONTHS) + r") (?P<year>20\d\d)\b")
+_RENT = re.compile(r"\brent\b", re.IGNORECASE)
+
+
+def _whole_months(text: str, asked_on: str) -> list[str]:
+    """
+    A month named without a day ("in March 2026") must be over by `asked_on`. A month still running is
+    named as the days it has had: "so far in March 2026 (1 to 21 March)".
+    """
+    asked = date.fromisoformat(asked_on)
+    out = []
+    for m in _BARE_MONTH.finditer(text):
+        month, year = MONTHS.index(m["month"]) + 1, int(m["year"])
+        nxt = date(year + (month == 12), month % 12 + 1, 1)
+        if nxt - timedelta(days=1) <= asked:
+            continue
+        days = f"1 {m['month']} only" if asked.day == 1 else f"1 to {asked.day} {m['month']}"
+        partial = (asked.year, asked.month) == (year, month)
+        if not (partial and text[: m.start()].endswith("so far in ") and text[m.end() :].startswith(f" ({days})")):
+            out.append(f"names {m['month']} {year} as a whole month, but the log ends on {asked_on}")
+    return out
+
+
+def _periods(d: dict) -> list[tuple[str, str]]:
+    """Every (from, to) a derivation selects over, through diffs."""
+    out = [(d["from"], d["to"])] if "from" in d and "to" in d else []
+    for side in ("left", "right"):
+        if isinstance(d.get(side), dict):
+            out += _periods(d[side])
+    return out
 
 
 def _tolerance(q: dict) -> float:
@@ -492,6 +536,13 @@ def check_question(
             say(f"skill {s} does not apply to {q['domain']}")
     if not _PERIOD.search(q["question"]):
         say("the question does not name its period (a month and year, a date, or now)")
+    for problem in _whole_months(q["question"], q["asked_on"]):
+        say(problem)
+    if _RENT.search(q["question"]):
+        periods = _periods(q["derivation"])
+        rents = [e["date"] for e in ev_true.s.of("expense") if e.get("category") == "rent"]
+        if periods and not any(a <= r <= z for a, z in periods for r in rents):
+            say("mentions rent, but no rent was paid in the period")
     if q["derivation"].get("after") != ["corrections", "retractions"]:
         say("derivation does not say it is after corrections and retractions")
     known = {e["id"] for e in user["events"]}

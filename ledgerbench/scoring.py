@@ -19,7 +19,11 @@ trustworthy as its scorer:
    left. With an "=" in the answer, only the text after the last "=" counts
    ("46.20 + 64.20 = 110.40"). When the gold is negative, an unsigned number
    next to a word of decrease or overspending ("lost 1.6 kg", "12.40 over
-   budget") counts as negative.
+   budget") counts as negative. When the question's unit is a duration
+   (`hours` or `minutes`), hours and minutes written together are one number
+   in that unit: "7 hours 45 minutes", "7 hours and 45 minutes", "7 hours 45",
+   "7h45", "7h 45m", "7 h 45 min" and "7:45 hours" are all 7.75 hours (465
+   minutes). Hours alone ("7.5 hours") are read as before.
 3. `date`: the first date in the answer, in ISO form or with a month name
    ("12 March", "March 12th", "12th of March", "Mar 12", with or without a
    weekday and year). All-numeric forms like 12/03 are ambiguous and never
@@ -197,6 +201,27 @@ _DATEISH = [
     re.compile(r"\b(?:week|day|month)\s+\d{1,2}\b", re.IGNORECASE),
 ]
 _CLOCK = re.compile(r"\b\d{1,2}:\d{2}(?::\d{2})?\b")
+
+# Hours and minutes written together, read as one number when the question's unit is a duration.
+DURATION_UNITS = {"hours": 60, "hour": 60, "minutes": 1, "minute": 1, "min": 1, "mins": 1}
+_HOURS = r"(?:hours?|hrs?|h)\.?"
+_MINUTES = r"(?:minutes?|mins?|m)\b\.?"
+# Words that may follow "7 hours 45" without making the 45 something other than minutes.
+_AFTER_BARE_MINUTES = r"(?:on|and|in|at|for|the|that|this|last|per|a|an|each|every|over|from|of|by|nightly)\b"
+_DURATIONS = [
+    # 7 hours 45 minutes, 7 hours and 45 minutes, 7 hours, 45 minutes, 7h45m, 7h 45m, 7 h 45 min
+    re.compile(
+        rf"(?<![\w.])(?P<h>\d{{1,3}})\s*{_HOURS}\s*(?:,\s*|and\s+)?(?P<m>\d{{1,2}})\s*{_MINUTES}", re.IGNORECASE
+    ),
+    # 7:45 hours, 7:45 h
+    re.compile(rf"(?<![\w.:])(?P<h>\d{{1,3}}):(?P<m>\d{{2}})\s*{_HOURS}(?![a-z])", re.IGNORECASE),
+    # 7 hours 45, 7h45, 7 hours and 45: minutes with no unit, unless a number, a symbol or a noun follows
+    re.compile(
+        rf"(?<![\w.])(?P<h>\d{{1,3}})\s*{_HOURS}\s*(?:and\s+)?(?P<m>\d{{1,2}})(?![\d:%×x]|[.,]\d)"
+        rf"(?!\s*(?!{_AFTER_BARE_MINUTES})[a-z%])",
+        re.IGNORECASE,
+    ),
+]
 _SETS_REPS = re.compile(r"\b\d+\s*[x×]\s*\d+\b", re.IGNORECASE)
 _ORDINAL = re.compile(r"\b\d+(?:st|nd|rd|th)\b", re.IGNORECASE)
 
@@ -242,8 +267,26 @@ def question_numbers(text: str) -> set[float]:
     return {_to_float(m["num"]) for m in _NUMBER.finditer(_normalise(text or ""))}
 
 
-def find_numbers(text: str, question: str = "") -> list[_Number]:
+def find_durations(text: str, unit: str | None) -> list[_Number]:
+    """Hours and minutes written together ("7 hours 45 minutes", "7h45"), as numbers in `unit`; none for other units."""
+    per = DURATION_UNITS.get((unit or "").strip().lower())
+    if per is None:
+        return []
     text = _normalise(text)
+    found: list[_Number] = []
+    for pattern in _DURATIONS:
+        for m in pattern.finditer(text):
+            hours, minutes = int(m["h"]), int(m["m"])
+            if minutes >= 60 or any(m.start() < n.end and n.start < m.end() for n in found):
+                continue
+            value = (hours * 60 + minutes) / per
+            found.append(_Number(value, m.group(0).strip(), m.start(), m.end(), False, frozenset()))
+    return sorted(found, key=lambda n: n.start)
+
+
+def find_numbers(text: str, question: str = "", unit: str | None = None) -> list[_Number]:
+    text = _normalise(text)
+    durations = find_durations(text, unit)
     date_spans = _spans(_DATEISH, text)
     clock_spans = _spans([_CLOCK], text)
     sets_spans = _spans([_SETS_REPS], text)
@@ -265,6 +308,8 @@ def find_numbers(text: str, question: str = "") -> list[_Number]:
         negative = (m["sign"] == "-") or (m["sign2"] == "-")
         if value in in_question:
             flags.add("question")
+        if any(d.start <= start and end <= d.end for d in durations):
+            continue  # a part of "7 hours 45 minutes", which is read whole below
         numbers.append(
             _Number(
                 value=-value if negative else value,
@@ -275,17 +320,22 @@ def find_numbers(text: str, question: str = "") -> list[_Number]:
                 flags=frozenset(flags),
             )
         )
-    return numbers
+    for d in durations:
+        flags = {"date"} if _inside(d.start, d.end, date_spans) else set()
+        if d.value in in_question:
+            flags.add("question")
+        numbers.append(_Number(d.value, d.text, d.start, d.end, False, frozenset(flags)))
+    return sorted(numbers, key=lambda n: n.start)
 
 
-def pick_number(text: str, question: str = "") -> _Number | None:
-    """The answer's number, by the rules in this module's docstring."""
+def pick_number(text: str, question: str = "", unit: str | None = None) -> _Number | None:
+    """The answer's number, by the rules in this module's docstring. `unit` turns on durations."""
     text = _normalise(text)
     if "=" in text:
         after = text.rsplit("=", 1)[1]
-        if find_numbers(after, question):
+        if find_numbers(after, question, unit):
             text = after
-    numbers = find_numbers(text, question)
+    numbers = find_numbers(text, question, unit)
     if not numbers:
         return None
     for allowed in (set(), {"question"}, {"question", "ordinal", "sets", "clock"}):
@@ -390,7 +440,7 @@ def score(question: Question, reply: str, *, judge: Judge | None = None) -> Scor
 
 
 def _score_number(question: Question, span: str, format_ok: bool) -> Score:
-    number = pick_number(span, question.question)
+    number = pick_number(span, question.question, question.unit)
     if number is None:
         return Score(False, None, DETERMINISTIC, "no number in the answer", format_ok)
     gold = float(question.gold)

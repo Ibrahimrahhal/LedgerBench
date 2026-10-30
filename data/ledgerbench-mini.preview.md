@@ -1,6 +1,6 @@
 # LedgerBench mini preview
 
-Seed 2026, version 1.0, generated 2026-10-30. This page shows one user; the JSON has 3.
+Seed 2026, version 1.1, generated 2026-10-30. This page shows one user; the JSON has 3.
 
 ```
 mini: 3 users, 60 questions
@@ -121,7 +121,7 @@ Tracks spending, food, training, body. Profile: I'm Sven, a paralegal in Leeds, 
 
 ### Twelve questions
 
-**u2:q1** (body; change; number): How much weight did I gain in March 2026, from my first weigh-in in that period to my last, in kg?
+**u2:q1** (body; change; number): How much weight did I gain so far in March 2026 (1 to 21 March), from my first weigh-in in that period to my last, in kg?
 
 - gold: `0.2` (0.2 kg)
 - evidence (10): u2:e40, u2:e56, u2:e58, u2:e80, u2:e121, u2:e127, u2:e129, u2:e134, u2:e157, u2:e178
@@ -139,13 +139,13 @@ Tracks spending, food, training, body. Profile: I'm Sven, a paralegal in Leeds, 
 - evidence (63): u2:e19, u2:e20, u2:e21, u2:e27, u2:e28, u2:e30, u2:e42, u2:e43, u2:e45, u2:e46, u2:e47, u2:e48 ...
 - derivation: `{"op": "avg", "type": "meal", "from": "2026-03-02", "to": "2026-03-20", "field": "items.*.protein_g", "per": "date", "round": 1, "after": ["corrections", "retractions"]}`
 
-**u2:q4** (training; aggregate; count): How many reps of lat pulldown did I do in total in March 2026, across all sets?
+**u2:q4** (training; aggregate; count): How many reps of lat pulldown did I do in total so far in March 2026 (1 to 21 March), across all sets?
 
 - gold: `147` (147 reps)
 - evidence (5): u2:e44, u2:e75, u2:e108, u2:e137, u2:e167
 - derivation: `{"op": "sum", "type": "workout", "unnest": "exercises", "where": {"name": "lat pulldown"}, "from": "2026-03-01", "to": "2026-03-21", "field": "sets.*.reps", "after": ["corrections", "retractions"]}`
 
-**u2:q6** (spending; aggregate; count): How many times did I pay for transport in March 2026?
+**u2:q6** (spending; aggregate; count): How many times did I pay for transport so far in March 2026 (1 to 21 March)?
 
 - gold: `3` (3 times)
 - evidence (3): u2:e25, u2:e83, u2:e143
@@ -157,38 +157,38 @@ Tracks spending, food, training, body. Profile: I'm Sven, a paralegal in Leeds, 
 - evidence (47): u2:e19, u2:e20, u2:e21, u2:e27, u2:e28, u2:e30, u2:e42, u2:e43, u2:e45, u2:e46, u2:e47, u2:e48 ...
 - derivation: `{"op": "diff", "left": {"op": "avg", "type": "meal", "from": "2026-03-02", "to": "2026-03-08", "field": "items.*.kcal", "per": "date"}, "right": {"op": "avg", "type": "meal", "from": "2026-03-09", "to": "2026-03-15", "field": "items.*.kcal", "per": "date"}, "round": 1, "after": ["corrections", "retractions"]}`
 
-**u2:q8** (spending; aggregate, correction; number): How much did I spend in total, every category and rent included, in March 2026, after refunds?
+**u2:q8** (spending; aggregate, correction; number): How much did I spend in total, every category included, so far in March 2026 (1 to 21 March), after refunds?
 
 - gold: `837.95` (837.95 GBP)
 - evidence (33): u2:e10, u2:e15, u2:e24, u2:e25, u2:e26, u2:e29, u2:e34, u2:e35, u2:e37, u2:e51, u2:e69, u2:e82 ...
 - derivation: `{"op": "sum", "type": "expense", "from": "2026-03-01", "to": "2026-03-21", "net_refunds": true, "field": "amount", "round": 2, "after": ["corrections", "retractions"]}`
 
-**u2:q9** (spending; state; number): How much do I pay each month for Disney+ now?
+**u2:q9** (spending; state; number): How much do I pay each month for Disney+ now, before any announced change takes effect?
 
 - gold: `8.99` (8.99 GBP)
 - evidence (1): u2:e3
 - derivation: `{"op": "as_of", "on": "2026-03-21", "of": {"kind": "recurring", "name": "Disney+"}, "round": 2, "after": ["corrections", "retractions"]}`
 
-**u2:q10** (body; aggregate; number): What was my shortest night of sleep in March 2026, in hours?
+**u2:q10** (body; aggregate; number): What was my shortest night of sleep so far in March 2026 (1 to 21 March), in hours?
 
 - gold: `4.5` (4.5 hours)
 - evidence (22): u2:e2, u2:e23, u2:e33, u2:e41, u2:e57, u2:e59, u2:e66, u2:e74, u2:e81, u2:e91, u2:e99, u2:e102 ...
 - derivation: `{"op": "min", "type": "sleep_hours", "from": "2026-03-01", "to": "2026-03-21", "field": "value", "return": "value", "round": 2, "after": ["corrections", "retractions"]}`
 
-**u2:q12** (training; as_of; set): On which days of the week was I scheduled to do lower sessions on 8 March 2026, by my training plan?
+**u2:q12** (training; as_of; set): On which days of the week was I scheduled to do lower sessions on 8 March 2026, by my training plan, as things stood that day, before any change I had announced took effect?
 
 - gold: `["Tuesday", "Friday"]` (Tuesday and Friday)
 - choices: 7; aliases: `{"Tuesday": ["Tuesday", "Tuesdays", "Tue"], "Friday": ["Friday", "Fridays", "Fri"]}`
 - evidence (1): u2:e5
 - derivation: `{"op": "as_of", "on": "2026-03-08", "of": {"kind": "plan", "extract": "days_for", "session": "Lower"}, "after": ["corrections", "retractions"]}`
 
-**u2:q13** (body; window, aggregate, correction; number): What was my average sleep in hours on weekend nights (logged Saturday and Sunday mornings) in March 2026, counting only what I logged?
+**u2:q13** (body; window, aggregate, correction; number): What was my average sleep in hours on weekend nights (logged Saturday and Sunday mornings) so far in March 2026 (1 to 21 March), counting only what I logged?
 
 - gold: `6.67` (6.67 hours)
 - evidence (7): u2:e2, u2:e57, u2:e66, u2:e102, u2:e122, u2:e128, u2:e179
 - derivation: `{"op": "avg", "type": "sleep_hours", "from": "2026-03-01", "to": "2026-03-21", "field": "value", "weekdays": ["Saturday", "Sunday"], "round": 2, "after": ["corrections", "retractions"]}`
 
-**u2:q20** (training; aggregate, correction; number): What was the heaviest weight I lifted for leg curl in March 2026, in kg?
+**u2:q20** (training; aggregate, correction; number): What was the heaviest weight I lifted for leg curl so far in March 2026 (1 to 21 March), in kg?
 
 - gold: `47.5` (47.5 kg)
 - evidence (6): u2:e31, u2:e89, u2:e115, u2:e149, u2:e165, u2:e172

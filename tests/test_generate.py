@@ -166,3 +166,86 @@ def test_corrections_change_the_gold(standard: dict) -> None:
                 b = b[int(p)] if p.isdigit() else b[p]
             assert a == e["value"] and b == e["was"] and a != b, e["id"]
     assert flagged >= 48
+
+
+# ------------------------------------------------------------------ the wording rules of 1.1
+
+
+def _timeline(u: dict, of: dict) -> list[tuple[str, str]]:
+    """(said, effective) for every statement of the value an as_of derivation reads, from the events alone."""
+    ev = u["events"]
+    kind = of["kind"]
+    if kind == "recurring":
+        decl = [e for e in ev if e["type"] == "recurring" and e["name"] == of["name"]]
+        ids = {e["id"] for e in decl}
+        return [(e["date"], e["date"]) for e in decl] + [
+            (e["date"], e["from"]) for e in ev if e["type"] == "price_change" and e["refers_to"] in ids
+        ]
+    if kind == "budget":
+        return [(e["date"], e["from"]) for e in ev if e["type"] == "budget" and e["category"] == of["category"]]
+    if kind == "target":
+        return [(e["date"], e["from"]) for e in ev if e["type"] == of["type"]]
+    if kind == "plan":
+        return [(e["date"], e.get("from", e["date"])) for e in ev if e["type"] in ("plan", "plan_change")]
+    return []
+
+
+@pytest.mark.parametrize("size", ["mini", "standard"])
+def test_pending_changes_are_named_and_boundary_days_avoided(size: str, mini: dict, standard: dict) -> None:
+    data = {"mini": mini, "standard": standard}[size]
+    seen = 0
+    for u in data["users"]:
+        for q in u["questions"]:
+            d = q["derivation"]
+            if d["op"] != "as_of":
+                continue
+            entries = _timeline(u, d["of"])
+            if not entries:
+                continue
+            on = d["on"]
+            first = min(entries)
+            pending = any(said <= on < eff for said, eff in entries)
+            if "state" in q["skills"]:
+                assert pending == ("before any announced change takes effect" in q["question"]), q["id"]
+            else:
+                assert pending == ("as things stood that day" in q["question"]), q["id"]
+                assert not any(eff == on for said, eff in entries if (said, eff) != first), q["id"]
+            seen += pending
+    assert size == "standard" or seen >= 1  # mini holds the u2 Disney+ case
+
+
+def test_exercise_and_food_aliases_carry_what_the_user_typed(mini: dict, standard: dict) -> None:
+    from ledgerbench.generate.questions import collides, forms_said
+
+    checked = 0
+    for data in (mini, standard):
+        for u in data["users"]:
+            messages = [m for s in u["sessions"] for m in s["messages"]]
+            typed = {**forms_said(messages, "exercise"), **forms_said(messages, "food")}
+            for q in u["questions"]:
+                if q["answer_type"] not in ("category", "set"):
+                    continue
+                alias_map = q["aliases"] if q["answer_type"] == "set" else {q["gold"]: q["aliases"]}
+                for member, aliases in alias_map.items():
+                    if member not in typed:
+                        continue
+                    checked += 1
+                    lowered = {a.lower() for a in aliases}
+                    for form in typed[member]:
+                        clash = any(c != member and collides(form, c) for c in q["choices"])
+                        assert (form.lower() in lowered) != clash, (q["id"], member, form)
+    assert checked >= 5
+
+
+def test_back_squat_takes_squats_unless_front_squat_is_a_choice(mini: dict, standard: dict) -> None:
+    cases = [
+        q
+        for data in (mini, standard)
+        for u in data["users"]
+        for q in u["questions"]
+        if q["answer_type"] == "category" and q["gold"] == "back squat"
+    ]
+    assert cases
+    for q in cases:
+        front = "front squat" in q["choices"]
+        assert ("squats" in q["aliases"]) != front and ("squat" in q["aliases"]) != front, q["id"]

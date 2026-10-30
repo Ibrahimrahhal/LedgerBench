@@ -1,6 +1,6 @@
 {
  "name": "LedgerBench",
- "version": "1.0",
+ "version": "1.1",
  "size": "mini",
  "seed": 2026,
  "generated_on": "2026-10-30",
@@ -387,7 +387,7 @@
      "skills": [
       "group"
      ],
-     "question": "Which food did I log most often in February 2026, counting each meal it appeared in?",
+     "question": "Which food did I log most often so far in February 2026 (1 to 21 February), counting each meal it appeared in?",
      "answer_type": "category",
      "gold": "veggie chilli",
      "unit": null,
@@ -760,7 +760,7 @@
       "cross",
       "aggregate"
      ],
-     "question": "What was my average daily calorie intake in February 2026 on the days I did a gym session (runs not counted), counting only days I also logged food?",
+     "question": "What was my average daily calorie intake so far in February 2026 (1 to 21 February) on the days I did a gym session (runs not counted), counting only days I also logged food?",
      "answer_type": "number",
      "gold": 1793.0,
      "unit": "kcal",
@@ -806,7 +806,7 @@
      "skills": [
       "adherence"
      ],
-     "question": "How many of the sessions on my training plan in February 2026 did I actually do, using the plan in force on each day?",
+     "question": "How many of the sessions on my training plan so far in February 2026 (1 to 21 February) did I actually do, using the plan in force on each day?",
      "answer_type": "count",
      "gold": 11,
      "unit": "sessions",
@@ -998,7 +998,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was the heaviest weight I lifted for bench press in February 2026, in lb?",
+     "question": "What was the heaviest weight I lifted for bench press so far in February 2026 (1 to 21 February), in lb?",
      "answer_type": "number",
      "gold": 180.0,
      "unit": "lb",
@@ -1125,7 +1125,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "On which day in February 2026 did I log my highest calorie total?",
+     "question": "On which day so far in February 2026 (1 to 21 February) did I log my highest calorie total?",
      "answer_type": "date",
      "gold": "2026-02-20",
      "unit": null,
@@ -1266,7 +1266,7 @@
      "skills": [
       "group"
      ],
-     "question": "Which exercise did I do the most working sets of in February 2026?",
+     "question": "Which exercise did I do the most working sets of so far in February 2026 (1 to 21 February)?",
      "answer_type": "category",
      "gold": "back squat",
      "unit": null,
@@ -1274,7 +1274,10 @@
      "abs_tol": null,
      "gold_text": "back squat",
      "aliases": [
-      "back squat"
+      "back squat",
+      "back squats",
+      "squats",
+      "squat"
      ],
      "choices": [
       "back squat",
@@ -3874,7 +3877,7 @@
      "skills": [
       "change"
      ],
-     "question": "How much weight did I gain in March 2026, from my first weigh-in in that period to my last, in kg?",
+     "question": "How much weight did I gain so far in March 2026 (1 to 21 March), from my first weigh-in in that period to my last, in kg?",
      "answer_type": "number",
      "gold": 0.2,
      "unit": "kg",
@@ -4056,7 +4059,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How many reps of lat pulldown did I do in total in March 2026, across all sets?",
+     "question": "How many reps of lat pulldown did I do in total so far in March 2026 (1 to 21 March), across all sets?",
      "answer_type": "count",
      "gold": 147,
      "unit": "reps",
@@ -4128,7 +4131,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How many times did I pay for transport in March 2026?",
+     "question": "How many times did I pay for transport so far in March 2026 (1 to 21 March)?",
      "answer_type": "count",
      "gold": 3,
      "unit": "times",
@@ -4255,7 +4258,7 @@
       "aggregate",
       "correction"
      ],
-     "question": "How much did I spend in total, every category and rent included, in March 2026, after refunds?",
+     "question": "How much did I spend in total, every category included, so far in March 2026 (1 to 21 March), after refunds?",
      "answer_type": "number",
      "gold": 837.95,
      "unit": "GBP",
@@ -4320,7 +4323,7 @@
      "skills": [
       "state"
      ],
-     "question": "How much do I pay each month for Disney+ now?",
+     "question": "How much do I pay each month for Disney+ now, before any announced change takes effect?",
      "answer_type": "number",
      "gold": 8.99,
      "unit": "GBP",
@@ -4353,7 +4356,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "What was my shortest night of sleep in March 2026, in hours?",
+     "question": "What was my shortest night of sleep so far in March 2026 (1 to 21 March), in hours?",
      "answer_type": "number",
      "gold": 4.5,
      "unit": "hours",
@@ -4453,7 +4456,7 @@
      "skills": [
       "as_of"
      ],
-     "question": "On which days of the week was I scheduled to do lower sessions on 8 March 2026, by my training plan?",
+     "question": "On which days of the week was I scheduled to do lower sessions on 8 March 2026, by my training plan, as things stood that day, before any change I had announced took effect?",
      "answer_type": "set",
      "gold": [
       "Tuesday",
@@ -4510,7 +4513,7 @@
       "aggregate",
       "correction"
      ],
-     "question": "What was my average sleep in hours on weekend nights (logged Saturday and Sunday mornings) in March 2026, counting only what I logged?",
+     "question": "What was my average sleep in hours on weekend nights (logged Saturday and Sunday mornings) so far in March 2026 (1 to 21 March), counting only what I logged?",
      "answer_type": "number",
      "gold": 6.67,
      "unit": "hours",
@@ -4662,7 +4665,7 @@
      "skills": [
       "budget"
      ],
-     "question": "How much of my groceries budget for March 2026 is left, as of 21 March 2026?",
+     "question": "How much of my monthly groceries budget is left, going by my spending so far in March 2026 (1 to 21 March)?",
      "answer_type": "number",
      "gold": 62.05,
      "unit": "GBP",
@@ -4862,7 +4865,7 @@
       "aggregate",
       "correction"
      ],
-     "question": "What was the heaviest weight I lifted for leg curl in March 2026, in kg?",
+     "question": "What was the heaviest weight I lifted for leg curl so far in March 2026 (1 to 21 March), in kg?",
      "answer_type": "number",
      "gold": 47.5,
      "unit": "kg",
@@ -8714,7 +8717,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How many times did I buy groceries in April 2026?",
+     "question": "How many times did I buy groceries so far in April 2026 (1 to 21 April)?",
      "answer_type": "count",
      "gold": 6,
      "unit": "times",
@@ -9022,7 +9025,7 @@
      "skills": [
       "as_of"
      ],
-     "question": "How much was I paying each month for Netflix on 7 April 2026?",
+     "question": "How much was I paying each month for Netflix on 7 April 2026, as things stood that day, before any change I had announced took effect?",
      "answer_type": "number",
      "gold": 13.99,
      "unit": "EUR",
@@ -9107,7 +9110,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "How many reps of leg curl did I do in total in April 2026, across all sets?",
+     "question": "How many reps of leg curl did I do in total so far in April 2026 (1 to 21 April), across all sets?",
      "answer_type": "count",
      "gold": 108,
      "unit": "reps",
@@ -9178,7 +9181,7 @@
      "skills": [
       "aggregate"
      ],
-     "question": "Apart from rent, what was my single biggest expense in the week from Monday 6 to Sunday 12 April 2026, before any refunds?",
+     "question": "What was my single biggest expense in the week from Monday 6 to Sunday 12 April 2026, before any refunds?",
      "answer_type": "number",
      "gold": 76.61,
      "unit": "EUR",
@@ -9230,7 +9233,7 @@
       "change",
       "correction"
      ],
-     "question": "How much weight did I lose in April 2026, from my first weigh-in in that period to my last, in kg?",
+     "question": "How much weight did I lose so far in April 2026 (1 to 21 April), from my first weigh-in in that period to my last, in kg?",
      "answer_type": "number",
      "gold": 2.0,
      "unit": "kg",
@@ -9339,7 +9342,7 @@
      "skills": [
       "group"
      ],
-     "question": "Which kind of training session did I do most often between 6 and 14 April 2026 inclusive, counting runs as Run sessions?",
+     "question": "Which kind of training session did I do most often between 6 and 14 April 2026 inclusive?",
      "answer_type": "category",
      "gold": "Upper",
      "unit": null,
@@ -9456,7 +9459,7 @@
      "skills": [
       "group"
      ],
-     "question": "Apart from rent, which spending category did I spend the most on in April 2026, after refunds?",
+     "question": "Apart from rent, which spending category did I spend the most on so far in April 2026 (1 to 21 April), after refunds?",
      "answer_type": "category",
      "gold": "groceries",
      "unit": null,
@@ -9559,7 +9562,10 @@
      "abs_tol": null,
      "gold_text": "back squat",
      "aliases": [
-      "back squat"
+      "back squat",
+      "back squats",
+      "squats",
+      "squat"
      ],
      "choices": [
       "back squat",

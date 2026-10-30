@@ -116,7 +116,7 @@ type:
 
 | Answer type | Correct when |
 |---|---|
-| Number | The first number in the answer is within tolerance of the gold: 1% relative, or half the natural precision (a cent, half a kcal) |
+| Number | The first number in the answer is within tolerance of the gold: 1% relative, or half the natural precision (a cent, half a kcal). For hours, "7 hours 45 minutes" or "7h45" is 7.75 |
 | Count | The first number equals the gold exactly |
 | Date | The first date (ISO or with a month name) is the gold date |
 | Category, set | The gold (or an alias) is named, and no other option from the question's closed list is |
@@ -158,7 +158,8 @@ ledgerbench run --system fullcontext --data data/ledgerbench-mini.json \
     --answer-model gpt-6-luna --users u1 --max-questions 5 --max-cost 0.50
 ```
 
-The datasets ship in `data/`. To regenerate them, or another seed:
+The datasets ship in `data/`, at dataset version 1.1 (`docs/CHANGELOG.md` says
+what changed). To regenerate them, or another seed:
 
 ```bash
 ledgerbench generate --size standard --seed 2026 --out data
@@ -173,7 +174,7 @@ can't re-derive every gold answer from the records.
 |---|---|
 | `fullcontext` | Every session so far in the prompt, dated. The ceiling while a history fits in context. |
 | `rag` | Each message embedded with its date; the 20 nearest go in the prompt. |
-| `mem0` | The open-source Mem0 library (2.2.1) with Qdrant. Needs `pip install -e ".[mem0]"` and `docker run -p 6333:6333 qdrant/qdrant`. |
+| `mem0` | The open-source Mem0 library (2.2.1) with Qdrant and its spaCy NLP extra. Needs `pip install -e ".[mem0]"`, `python -m spacy download en_core_web_sm` and `docker run -p 6333:6333 qdrant/qdrant`. |
 | `oracle`, `null` | Test systems that check the scorer. |
 
 ### `ledgerbench run` options
@@ -257,6 +258,7 @@ Optional `forget` and `restore` hooks make long runs resumable.
 ```
 data/                      the three datasets and their previews
 docs/SPEC.md               the contract: formats, question rules, scoring
+docs/CHANGELOG.md          what changed in each dataset version
 ledgerbench/generate/      the simulators, question builders and the independent checker
 ledgerbench/scoring.py     every scoring rule, with its reasoning
 ledgerbench/runner.py      ingestion, answering, resuming, the budget guard

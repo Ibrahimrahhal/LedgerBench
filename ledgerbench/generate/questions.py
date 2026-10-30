@@ -29,14 +29,15 @@ from ledgerbench.generate.calendar import (
     long_date,
     long_date_wd,
     month_label,
+    month_name,
     range_words,
     week_words,
     weekday,
 )  # fmt: skip
 from ledgerbench.generate.core import Rec, UserCtx
-from ledgerbench.generate.food import MEAL_ALIASES, MEALS
+from ledgerbench.generate.food import COUNT_WORDS, MEAL_ALIASES, MEALS, all_food_names
 from ledgerbench.generate.spending import CATEGORIES, CATEGORY_ALIASES, CATEGORY_PHRASE
-from ledgerbench.generate.training import EXERCISE_ALIASES, SESSION_ALIASES, SESSIONS
+from ledgerbench.generate.training import EXERCISE_ALIASES, LABELS, SESSION_ALIASES, SESSIONS
 
 AFTER = ["corrections", "retractions"]
 DOMAIN_OF = {
@@ -82,6 +83,97 @@ def join_words(items: list[str]) -> str:
     if len(items) == 1:
         return items[0]
     return ", ".join(items[:-1]) + " and " + items[-1]
+
+
+# ------------------------------------------------------------------ names and their aliases
+#
+# A category or set question whose gold names an exercise or a food accepts every form this user typed
+# for it ("squats", "BB rows", "slices of toast"), found in their own messages, plus the plain singular
+# and plural of each, unless a form collides word for word (plurals aside) with another choice: with
+# both back squat and front squat among the choices, "squat" and "squats" say neither.
+
+SURFACE_FORMS = {
+    "exercise": {name: list(forms) for name, forms in LABELS.items()},
+    "food": {name: [name] + ([COUNT_WORDS[name]] if name in COUNT_WORDS else []) for name in all_food_names()},
+}
+
+
+def _stem(word: str) -> str:
+    w = word.lower()
+    if len(w) > 4 and w.endswith("ies"):
+        return w[:-3] + "y"
+    if w.endswith(("sses", "shes", "ches", "xes")):
+        return w[:-2]
+    if len(w) > 3 and w.endswith("s") and not w.endswith("ss"):
+        return w[:-1]
+    return w
+
+
+def _stems(text: str) -> list[str]:
+    return [_stem(w) for w in re.findall(r"[a-z0-9]+", text.lower())]
+
+
+def collides(a: str, b: str) -> bool:
+    """One term's words, plurals aside, run inside the other's: 'squats' and 'front squat' do."""
+    x, y = _stems(a), _stems(b)
+    if len(x) > len(y):
+        x, y = y, x
+    return bool(x) and any(y[i : i + len(x)] == x for i in range(len(y) - len(x) + 1))
+
+
+def number_forms(term: str) -> list[str]:
+    """
+    The term and its plain singular or plural. The scorer already accepts every term with "s" or "es"
+    added, so a plural is written out only when it is not formed that way (blueberry, blueberries).
+    Abbreviations and 'x and y' stay as they are.
+    """
+    words = term.split(" ")
+    last = words[-1]
+    if " and " in term or not last.isalpha() or (len(last) > 1 and last.isupper()):
+        return [term]
+    head = " ".join(words[:-1] + [""])
+    lower = last.lower()
+    if len(lower) > 4 and lower.endswith("ies"):
+        return [term, head + last[:-3] + "y"]
+    if lower.endswith(("sses", "shes", "ches", "xes")):
+        return [term, head + last[:-2]]
+    if len(lower) > 3 and lower.endswith("s") and not lower.endswith("ss"):
+        return [term, head + last[:-1]]
+    if len(lower) > 2 and lower.endswith("y") and lower[-2] not in "aeiou":
+        return [term, head + last[:-1] + "ies"]
+    return [term]
+
+
+def named_aliases(gold: str, forms: list[str], choices: list[str]) -> list[str]:
+    out = [gold]
+    for form in [gold, *forms]:
+        for f in number_forms(form):
+            if f.lower() in (o.lower() for o in out):
+                continue
+            if any(c != gold and collides(f, c) for c in choices):
+                continue
+            out.append(f)
+    return out
+
+
+def forms_said(messages: list[str], kind: str) -> dict[str, list[str]]:
+    """Which surface forms of each name the messages use, longest first so 'back squats' is not also 'squats'."""
+    terms = sorted(
+        ((form, name) for name, forms in SURFACE_FORMS[kind].items() for form in forms),
+        key=lambda t: (-len(t[0]), t[0]),
+    )
+    found: dict[str, list[str]] = {}
+    for text in messages:
+        low = text.lower()
+        taken: list[tuple[int, int]] = []
+        for form, name in terms:
+            for m in re.finditer(r"(?<![a-z0-9])" + re.escape(form.lower()) + r"(?![a-z0-9])", low):
+                if any(m.start() < e and s < m.end() for s, e in taken):
+                    continue
+                taken.append((m.start(), m.end()))
+                if form not in found.setdefault(name, []):
+                    found[name].append(form)
+    return {name: sorted(forms) for name, forms in found.items()}
 
 
 # ------------------------------------------------------------------ views
@@ -173,6 +265,14 @@ class Builder:
         self.plans = tr["plans"] if tr else []
         self.lift_unit = self.p["units"]["lifts"]
         self.bw_unit = self.p["units"]["body_weight"]
+        self.messages = [m for s in getattr(ctx, "sessions", []) for m in s["messages"]]
+        self._said: dict[str, dict[str, list[str]]] = {}
+
+    def said(self, kind: str, name: str) -> list[str]:
+        """The forms of an exercise or food name this user typed in their messages."""
+        if kind not in self._said:
+            self._said[kind] = forms_said(self.messages, kind)
+        return self._said[kind].get(name, [])
 
     # -- periods ---------------------------------------------------------------
     def focused(self) -> list[date]:
@@ -186,8 +286,8 @@ class Builder:
             pool = [m for m in pool if any(m[0] <= x <= m[1] for x in f)] or pool
         if not pool:
             return None
-        a, b, label, _ = self.rng.choice(pool)
-        return a, b, f"in {label}"
+        a, b, label, complete = self.rng.choice(pool)
+        return a, b, month_words(a, b, label, complete)
 
     def week(self):
         if not self.weeks:
@@ -410,6 +510,44 @@ class Builder:
         """True when nothing said after d takes effect on or before d (no retroactive statements)."""
         return all(not (rec.date > d and eff <= d) for eff, _, rec in entries)
 
+    @staticmethod
+    def announced(entries, d: date) -> bool:
+        """A change had been said by d but had not taken effect yet: 'now' or 'on d' could mean either value."""
+        return any(rec.date <= d < eff for eff, _, rec in entries)
+
+    @staticmethod
+    def changes_on(entries, d: date) -> bool:
+        """d is the day a change (not the first statement) takes effect: the boundary between two values."""
+        if not entries:
+            return False
+        first = min(entries, key=lambda e: (e[2].date, e[0]))
+        return any(eff == d for eff, _, rec in entries if rec is not first[2])
+
+    def in_period(self, a: date, z: date, cat: str) -> bool:
+        """At least one expense of the category falls in the period, so a question may name it."""
+        return any(r["category"] == cat for r in between(self.T.rows("expense"), a, z))
+
+
+# How a state or as_of question says which value it means when a change was announced but not yet in force.
+PENDING_NOW = ", before any announced change takes effect"
+PENDING_THEN = ", as things stood that day, before any change I had announced took effect"
+
+
+def pending_note(b: Builder, entries, d: date, now: bool) -> str:
+    return (PENDING_NOW if now else PENDING_THEN) if b.announced(entries, d) else ""
+
+
+def month_words(a: date, z: date, label: str, complete: bool) -> str:
+    """'in March 2026' for a month the log covers to its end; 'so far in March 2026 (1 to 21 March)' otherwise."""
+    if complete:
+        return f"in {label}"
+    return f"so far in {label} ({partial_days(a, z)})"
+
+
+def partial_days(a: date, z: date) -> str:
+    """'1 to 21 March', the days of a month the log covers so far."""
+    return f"1 {month_name(z)} only" if z.day == 1 else f"1 to {z.day} {month_name(z)}"
+
 
 def pseudo(rows) -> list[dict]:
     return [{"id": r.id} for r in rows]
@@ -522,7 +660,8 @@ def sp_aggregate(b: Builder, nf: bool):
             },
         )
     if form == "total":
-        q = f"How much did I spend in total, every category and rent included, {words}{after_refunds(b, a, z, None)}?"
+        included = "every category and rent included" if b.in_period(a, z, "rent") else "every category included"
+        q = f"How much did I spend in total, {included}, {words}{after_refunds(b, a, z, None)}?"
         return b.make(
             domain="spending",
             skills=["aggregate"],
@@ -597,8 +736,13 @@ def sp_aggregate(b: Builder, nf: bool):
         winners = [r for r in rows if r["amount"] == top]
         return (winners[0], rows) if len(winners) == 1 else (None, rows)
 
+    rent = b.in_period(a, z, "rent")
     if form == "max":
-        q = f"Apart from rent, what was my single biggest expense {words}, before any refunds?"
+        q = (
+            f"Apart from rent, what was my single biggest expense {words}, before any refunds?"
+            if rent
+            else f"What was my single biggest expense {words}, before any refunds?"
+        )
         return b.make(
             domain="spending",
             skills=["aggregate"],
@@ -618,7 +762,7 @@ def sp_aggregate(b: Builder, nf: bool):
                 "return": "value",
             },
         )
-    q = f"On what date was my single biggest expense {words}, apart from rent?"
+    q = f"On what date was my single biggest expense {words}{', apart from rent' if rent else ''}?"
     return b.make(
         domain="spending",
         skills=["aggregate"],
@@ -707,10 +851,15 @@ def sp_group(b: Builder, nf: bool):
             return len(ranked) >= 2 and ranked[0] - ranked[1] >= 2
         return len(ranked) >= 2 and ranked[0] > ranked[1] * (1 + GROUP_MARGIN)
 
+    # name an excluded category only when the period holds some of it
+    left_out = [c for c in (["rent", "coffee"] if by_count else ["rent"]) if b.in_period(a, z, c)]
+    apart = f"Apart from {join_words(left_out)}, " if left_out else ""
     if by_count:
-        q = f"Apart from rent and coffee, in which spending category did I make the most purchases {words}, counting purchases rather than money?"
+        lead = "in which" if apart else "In which"
+        q = f"{apart}{lead} spending category did I make the most purchases {words}, counting purchases rather than money?"
     else:
-        q = f"Apart from rent, which spending category did I spend the most on {words}{after_refunds(b, a, z, None)}?"
+        lead = "which" if apart else "Which"
+        q = f"{apart}{lead} spending category did I spend the most on {words}{after_refunds(b, a, z, None)}?"
     deriv = {
         "op": "top",
         "type": "expense",
@@ -834,9 +983,12 @@ def sp_state(b: Builder, nf: bool, on: date | None = None):
         price, recs = recurring_on(b, name, d)
         if price is None:
             return "not declared yet"
+        entries = tl["recurring"][name]
+        if on is not None and b.changes_on(entries, d):
+            return "the price changes that day"
         what = {"rent": "rent", "the internet": "the internet"}.get(name, name)
         verb = "do I pay" if on is None else "was I paying"
-        q = f"How much {verb} each month for {what} {when}?"
+        q = f"How much {verb} each month for {what} {when}{pending_note(b, entries, d, on is None)}?"
         return b.make(
             domain="spending",
             skills=[skill],
@@ -854,8 +1006,10 @@ def sp_state(b: Builder, nf: bool, on: date | None = None):
         hit = b.timeline_on(entries, d)
         if hit is None or not b.stable_on(entries, d) or hit[2].date > d:
             return "no budget in force yet"
+        if on is not None and b.changes_on(entries, d):
+            return "the budget changes that day"
         verb = "is" if on is None else "was"
-        q = f"What {verb} my monthly budget for {cat} {when}?"
+        q = f"What {verb} my monthly budget for {cat} {when}{pending_note(b, entries, d, on is None)}?"
         return b.make(
             domain="spending",
             skills=[skill],
@@ -970,6 +1124,8 @@ def sp_change(b: Builder, nf: bool):
         decl = tl["recurring"][name][0][2].date
         if eff > b.last or decl >= eff - timedelta(days=1):
             return "change not in force"
+        if b.announced(tl["recurring"][name], b.last):
+            return "a change is announced but not in force now"
         d1 = decl + timedelta(days=rng.randrange(0, (eff - decl).days))
         p1, r1 = recurring_on(b, name, d1)
         p2, r2 = recurring_on(b, name, b.last)
@@ -999,6 +1155,8 @@ def sp_change(b: Builder, nf: bool):
     d1 = max(first_eff, first_rec.date)
     if now is None or now[1] == first_amt or d1 >= now[0]:
         return "no change in force"
+    if b.announced(entries, b.last):
+        return "a change is announced but not in force now"
     up = now[1] > first_amt
     q = f"How much {'higher' if up else 'lower'} is my monthly {BUDGET_NAME.get(cat, cat)} budget now than it was on {long_date(d1)}?"
     left, right = (b.last, d1) if up else (d1, b.last)
@@ -1035,19 +1193,21 @@ def sp_budget(b: Builder, nf: bool):
         return "refund straddles the month"
     spent, _ = b.spend(b.T, a, z, cat)
     left = hit[1] - spent
-    so_far = "" if complete else f", as of {long_date(z)}"
+    name = BUDGET_NAME.get(cat, cat)
+    # a month not over yet is named as the days it has had, never as the whole month
+    so_far = f", going by my spending {month_words(a, z, label, complete)}"
     refunds = after_refunds(b, a, z, cat)
     if left > 0:
         q = (
-            f"How much of my {BUDGET_NAME.get(cat, cat)} budget for {label} was left at the end of the month{refunds}?"
+            f"How much of my {name} budget for {label} was left at the end of the month{refunds}?"
             if complete
-            else f"How much of my {BUDGET_NAME.get(cat, cat)} budget for {label} is left{so_far}{refunds}?"
+            else f"How much of my monthly {name} budget is left{so_far}{refunds}?"
         )
     else:
         q = (
-            f"By how much did I go over my {BUDGET_NAME.get(cat, cat)} budget for {label}{refunds}?"
+            f"By how much did I go over my {name} budget for {label}{refunds}?"
             if complete
-            else f"By how much am I over my {BUDGET_NAME.get(cat, cat)} budget for {label}{so_far}{refunds}?"
+            else f"By how much am I over my monthly {name} budget{so_far}{refunds}?"
         )
     if CATEGORY_PHRASE[cat] != cat:
         q += f" Count everything that is {CATEGORY_PHRASE[cat]} against it."
@@ -1163,7 +1323,7 @@ def fd_lookup(b: Builder, nf: bool):
         exempt=True,
         need_fix=nf,
         choices=names,
-        aliases={},
+        aliases=lambda g: food_aliases(b, g, names),
         compute=lambda v: (lambda t: ([it["name"] for it in t[0]["items"]] if t[0] else None, t[1]))(one(v)),
         derivation={
             "op": "lookup",
@@ -1347,7 +1507,8 @@ def fd_group(b: Builder, nf: bool):
             return out, rs
 
         q = f"Which food did I log most often {words}, counting each meal it appeared in?"
-        choices, aliases = food_names(b), (lambda g: [g])
+        choices = food_names(b)
+        aliases = lambda g: food_aliases(b, g, choices)  # noqa: E731
         deriv = {
             "op": "top",
             "type": "meal",
@@ -1439,14 +1600,17 @@ def fd_state(b: Builder, nf: bool, on: date | None = None):
     hit = b.timeline_on(tl[kind], d)
     if hit is None or not b.stable_on(tl[kind], d) or hit[2].date > d:
         return "no target in force"
+    if on is not None and b.changes_on(tl[kind], d):
+        return "the target changes that day"
     when = "now" if on is None else f"on {long_date(on)}"
     verb = "is" if on is None else "was"
     what = "daily calorie target" if kind == "kcal_target" else "daily protein target"
     unit = "" if kind == "kcal_target" else ", in grams"
+    note = pending_note(b, tl[kind], d, on is None)
     return b.make(
         domain="food",
         skills=["state" if on is None else "as_of"],
-        question=f"What {verb} my {what} {when}{unit}?",
+        question=f"What {verb} my {what} {when}{unit}{note}?",
         atype="number",
         kind="kcal" if kind == "kcal_target" else "g",
         exempt=True,
@@ -1484,6 +1648,8 @@ def fd_change(b: Builder, nf: bool):
         d1 = max(first[0], first[2].date)
         if now is None or now[1] == first[1] or now[0] <= d1:
             return "no change"
+        if b.announced(entries, b.last):
+            return "a change is announced but not in force now"
         up = now[1] > first[1]
         q = f"How much {'higher' if up else 'lower'} is my daily calorie target now than it was on {long_date(d1)}?"
         left, right = (b.last, d1) if up else (d1, b.last)
@@ -1618,14 +1784,13 @@ def session_choices(b: Builder) -> list[str]:
     return list(SESSIONS)
 
 
-def ex_aliases(name: str, choices: list[str]) -> list[str]:
-    from ledgerbench.generate.food import _contains
+def ex_aliases(b: Builder, name: str, choices: list[str]) -> list[str]:
+    """The exercise's honest synonyms, every form this user typed for it, and their singulars and plurals."""
+    return named_aliases(name, [*EXERCISE_ALIASES[name], *b.said("exercise", name)], choices)
 
-    out = []
-    for a in EXERCISE_ALIASES[name]:
-        if all(c == name or not (_contains(c, a) or _contains(a, c)) for c in choices):
-            out.append(a)
-    return out or [name]
+
+def food_aliases(b: Builder, name: str, choices: list[str]) -> list[str]:
+    return named_aliases(name, b.said("food", name), choices)
 
 
 def lifted(row: dict, name: str):
@@ -1880,7 +2045,8 @@ def tr_group(b: Builder, nf: bool):
                 out[s] = out.get(s, 0) + 1
             return out, rs
 
-        q = f"Which kind of training session did I do most often {words}, counting runs as Run sessions?"
+        runs = " counting runs as Run sessions" if between(b.T.rows("run"), a, z) else ""
+        q = f"Which kind of training session did I do most often {words}{',' if runs else ''}{runs}?"
         choices, aliases = session_choices(b), SESSION_ALIASES.get
         deriv = {
             "op": "top",
@@ -1904,7 +2070,7 @@ def tr_group(b: Builder, nf: bool):
 
         q = f"Which exercise did I do the most working sets of {words}?"
         choices = exercise_choices(b)
-        aliases = lambda g: ex_aliases(g, choices)  # noqa: E731
+        aliases = lambda g: ex_aliases(b, g, choices)  # noqa: E731
         deriv = {
             "op": "top",
             "type": "workout",
@@ -2020,9 +2186,12 @@ def tr_window(b: Builder, nf: bool):
 def tr_state(b: Builder, nf: bool, on: date | None = None):
     rng = b.rng
     d = on or b.last
+    if on is not None and b.changes_on(b.plans, d):
+        return "the plan changes that day"
     plan = b.plan_on(d)
     rec = b.plan_rec_on(d)
     when = "now" if on is None else f"on {long_date(on)}"
+    note = pending_note(b, b.plans, d, on is None)
     am = "am I" if on is None else "was I"
     skill = "state" if on is None else "as_of"
     sessions = [s for s in plan["sessions"] if s != "Rest"]
@@ -2036,7 +2205,7 @@ def tr_state(b: Builder, nf: bool, on: date | None = None):
         s = rng.choice(sessions)
         days = [wd for wd in WEEKDAYS if plan["days"][wd] == s]
         label = "runs" if s == "Run" else f"{s.lower()} sessions" if s != "Full body" else "full body sessions"
-        q = f"On which days of the week {am} scheduled to do {label} {when}, by my training plan?"
+        q = f"On which days of the week {am} scheduled to do {label} {when}, by my training plan{note}?"
         return b.make(
             domain="training",
             skills=[skill],
@@ -2053,7 +2222,7 @@ def tr_state(b: Builder, nf: bool, on: date | None = None):
         wd = rng.choice(WEEKDAYS)
         s = plan["days"][wd]
         is_ = "is" if on is None else "was"
-        q = f"Which session {is_} on my training plan for {wd}s {when}? Say Rest if it {is_} a rest day."
+        q = f"Which session {is_} on my training plan for {wd}s {when}{note}? Say Rest if it {is_} a rest day."
         return b.make(
             domain="training",
             skills=[skill],
@@ -2068,7 +2237,7 @@ def tr_state(b: Builder, nf: bool, on: date | None = None):
         )
     if form == "count_days":
         n = sum(1 for wd in WEEKDAYS if plan["days"][wd] != "Rest")
-        q = f"How many training days a week {'does' if on is None else 'did'} my plan have {when}, runs included?"
+        q = f"How many training days a week {'does' if on is None else 'did'} my plan have {when}, runs included{note}?"
         return b.make(
             domain="training",
             skills=[skill],
@@ -2084,7 +2253,7 @@ def tr_state(b: Builder, nf: bool, on: date | None = None):
     e = next(x for sess in plan["sessions"].values() for x in sess if x["exercise"] == name)
     if form == "prescription":
         text = f"{e['sets']}x{e['reps']} at {e['weight']:g} {b.lift_unit}"
-        q = f"What {'is' if on is None else 'was'} my prescription for {name} on my plan {when}: sets, reps and weight?"
+        q = f"What {'is' if on is None else 'was'} my prescription for {name} on my plan {when}{note}: sets, reps and weight?"
         return b.make(
             domain="training",
             skills=[skill],
@@ -2098,7 +2267,7 @@ def tr_state(b: Builder, nf: bool, on: date | None = None):
                 "of": {"kind": "plan", "extract": "prescription", "exercise": name, "unit": b.lift_unit},
             },
         )
-    q = f"What {'is' if on is None else 'was'} my working weight for {name} on my plan {when}, in {b.lift_unit}?"
+    q = f"What {'is' if on is None else 'was'} my working weight for {name} on my plan {when}{note}, in {b.lift_unit}?"
     return b.make(
         domain="training",
         skills=[skill],
@@ -2138,6 +2307,8 @@ def tr_change(b: Builder, nf: bool):
         w2 = next(x["weight"] for s in b.plan_on(b.last)["sessions"].values() for x in s if x["exercise"] == name)
         if w1 is None or w1 == w2:
             return "no change"
+        if b.announced(b.plans, b.last):
+            return "a change is announced but not in force now"
         up = w2 > w1
         q = f"By how much has my working weight for {name} gone {'up' if up else 'down'} on my plan between {long_date(d1)} and now, in {b.lift_unit}?"
         left, right = (b.last, d1) if up else (d1, b.last)

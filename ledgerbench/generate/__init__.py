@@ -29,7 +29,7 @@ from ledgerbench.generate import personas, questions
 from ledgerbench.generate.build import LOGGED, build_user, events_of
 
 NAME = "LedgerBench"
-VERSION = "1.0"
+VERSION = "1.1"
 
 __all__ = ["main", "generate", "NAME", "VERSION"]
 

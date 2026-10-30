@@ -176,6 +176,80 @@ def test_number_trap_repeats_question_then_answer():
     assert score(question, "Answer: Over the 7 nights from 1 to 7 March 2026 it was 18.5").correct
 
 
+SLEEP = q(
+    "number",
+    7.75,
+    question="Going by the most recent night I logged, how many hours am I sleeping now?",
+    unit="hours",
+    abs_tol=0.05,
+)
+
+DURATIONS = [
+    ("Answer: 7 hours 45 minutes.", True),  # the u3:q11 reply in the first smoke run, once read as 7
+    ("Answer: 7 hours 45 minutes", True),
+    ("Answer: 7 hours and 45 minutes", True),
+    ("Answer: 7 hours, 45 minutes", True),
+    ("Answer: 7 hours 45", True),
+    ("Answer: 7 hours 45.", True),
+    ("Answer: 7 hrs 45 mins", True),
+    ("Answer: 7h45", True),
+    ("Answer: 7h45m", True),
+    ("Answer: 7h 45m", True),
+    ("Answer: 7 h 45 min", True),
+    ("Answer: 7:45 hours", True),
+    ("Answer: 7:45 h", True),
+    ("Answer: 7.75 hours", True),  # decimals still work
+    ("Answer: 7.75", True),
+    ("Answer: about 7 hours 45 minutes a night", True),
+    ("Answer: 7 hours 45 minutes (7.75 hours)", True),
+    ("Answer: 7 hours", False),  # the minutes are missing
+    ("Answer: 7 hours 30 minutes", False),
+    ("Answer: 7h30", False),
+    ("Answer: 8 hours 45 minutes", False),
+    ("Answer: 7:45", False),  # without a unit it reads as a clock time, as before
+    ("Answer: 7 hours 75 minutes", False),  # not a duration: 7 is the first number
+]
+
+
+@pytest.mark.parametrize(("reply", "expected"), DURATIONS)
+def test_durations_in_hours(reply, expected):
+    assert score(SLEEP, reply).correct is expected
+
+
+def test_duration_after_a_number_the_question_restates():
+    question = q(
+        "number",
+        7.75,
+        question="What was my average sleep per night, in hours, over the 3 weeks between 2 and 22 March 2026 inclusive?",
+        unit="hours",
+        abs_tol=0.05,
+    )
+    assert score(question, "Answer: Over the 3 weeks it came to 7 hours 45 a night.").correct
+    assert score(question, "Answer: 3 weeks: 7h45 on average").correct
+    assert score(question, "Answer: Between 2 and 22 March 2026, 7 hours 45 minutes").correct
+    assert score(question, "Answer: Over the 3 weeks, 7 hours").correct is False
+    result = score(question, "Answer: Over the 3 weeks it came to 7 hours 45 a night.")
+    assert result.extracted == "7.75"
+
+
+def test_durations_in_minutes():
+    run = q("number", 75.0, question="How long did my run on 3 March 2026 take, in minutes?", unit="minutes")
+    assert score(run, "Answer: 1 hour 15 minutes").correct
+    assert score(run, "Answer: 1 hour 5 minutes").correct is False  # 65, not 75
+    assert score(run, "Answer: 1").correct is False
+    assert score(q("number", 65.0, unit="minutes", abs_tol=0.5), "Answer: 1 hour 5 minutes").correct
+    assert score(q("number", 65.0, unit="minutes", abs_tol=0.5), "Answer: 1h05").correct
+    assert score(q("number", 65.0, unit="minutes", abs_tol=0.5), "Answer: 65 min").correct
+
+
+def test_durations_only_for_duration_units():
+    money = q("number", 7.0, unit="EUR")
+    assert score(money, "Answer: 7 hours 45 minutes").correct  # not a duration question: the first number
+    kcal = q("number", 7.75, unit="kcal", abs_tol=0.5)
+    assert pick_number("7h45", "", "kcal").value == 7
+    assert score(kcal, "Answer: 7.75 kcal").correct
+
+
 def test_extracted_and_reason_are_reported():
     result = score(MONEY, "**Answer:** about €412.35")
     assert result.correct and result.extracted == "412.35" and result.method == "deterministic" and result.format_ok

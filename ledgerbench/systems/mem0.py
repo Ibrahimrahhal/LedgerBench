@@ -194,6 +194,7 @@ class Mem0(MemorySystem):
             except ImportError as error:  # pragma: no cover - depends on the install
                 raise RuntimeError("mem0ai is not installed: pip install 'ledgerbench[mem0]'") from error
             self.version = getattr(mem0, "__version__", "?")
+            _require_spacy(self.options)
             history_db = str(run.state_dir("mem0") / "history.db")
             self.memory = Memory.from_config(
                 config_for(run, collection=self.collection, history_db=history_db, qdrant_url=self.qdrant_url)
@@ -289,3 +290,24 @@ class Mem0(MemorySystem):
             f"Answering: search(top_k={self.top_k}) on the question's text, memories listed with their day, the shared answer prompt. "
             "Ingestion and search usage metered by patching the OpenAI SDK."
         )
+
+
+def _require_spacy(options: dict[str, Any]) -> None:
+    """
+    Mem0 lemmatizes memories for its BM25 search and extracts entities with
+    spaCy. Without it Mem0 only logs a warning and runs degraded, which would
+    understate it, so the run refuses to start unless told otherwise with
+    `--option allow_degraded=true`.
+    """
+    if str(options.get("allow_degraded", "")).lower() in ("1", "true", "yes"):
+        return
+    try:
+        import spacy
+
+        spacy.load("en_core_web_sm", disable=["ner", "parser"])
+    except Exception as error:  # noqa: BLE001 - any failure here means the same thing
+        raise RuntimeError(
+            "mem0 needs spaCy and its English model for full-strength search: "
+            "pip install 'ledgerbench[mem0]' && python -m spacy download en_core_web_sm "
+            "(or pass --option allow_degraded=true to run without them, and say so)"
+        ) from error
