@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Ibrahimrahhal/ledger-bench/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/Ibrahimrahhal/ledger-bench/actions/workflows/test.yml/badge.svg"></a>
+  <a href="https://github.com/Ibrahimrahhal/LedgerBench/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/Ibrahimrahhal/LedgerBench/actions/workflows/test.yml/badge.svg"></a>
   <a href="docs/CHANGELOG.md"><img alt="Dataset 1.1" src="https://img.shields.io/badge/dataset-1.1-0e7c6b"></a>
   <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-3d4a5c">
   <img alt="Scoring: standard library only" src="https://img.shields.io/badge/scoring-stdlib%20only-b4581b">
@@ -265,8 +265,8 @@ Python 3.10 or newer. Generating, loading and scoring use only the standard
 library.
 
 ```bash
-git clone https://github.com/Ibrahimrahhal/ledger-bench.git
-cd ledger-bench
+git clone https://github.com/Ibrahimrahhal/LedgerBench.git
+cd LedgerBench
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[openai]"
 
@@ -414,7 +414,7 @@ CI runs lint, the tests, and the oracle and null systems on `mini`, on Python
   title  = {LedgerBench: Can an AI Assistant's Memory Keep the Books on a Person's Life?},
   author = {Rahhal, Ibrahim},
   year   = {2026},
-  url    = {https://github.com/Ibrahimrahhal/ledger-bench}
+  url    = {https://github.com/Ibrahimrahhal/LedgerBench}
 }
 ```
 
