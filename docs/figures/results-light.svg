@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="430" viewBox="0 0 1280 430" role="img" aria-label="LedgerBench accuracy by system">
+<title>LedgerBench accuracy by system</title>
+<line x1="230.0" y1="52" x2="230.0" y2="356" stroke="#e4ddd0" stroke-dasharray="0"/>
+<text x="230.0" y="380" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#59636e" text-anchor="middle" >0%</text>
+<line x1="410.0" y1="52" x2="410.0" y2="356" stroke="#e4ddd0" stroke-dasharray="3 5"/>
+<text x="410.0" y="380" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#59636e" text-anchor="middle" >25%</text>
+<line x1="590.0" y1="52" x2="590.0" y2="356" stroke="#e4ddd0" stroke-dasharray="3 5"/>
+<text x="590.0" y="380" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#59636e" text-anchor="middle" >50%</text>
+<line x1="770.0" y1="52" x2="770.0" y2="356" stroke="#e4ddd0" stroke-dasharray="3 5"/>
+<text x="770.0" y="380" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#59636e" text-anchor="middle" >75%</text>
+<line x1="950.0" y1="52" x2="950.0" y2="356" stroke="#e4ddd0" stroke-dasharray="0"/>
+<text x="950.0" y="380" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#59636e" text-anchor="middle" >100%</text>
+<text x="230" y="30" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="600" fill="#59636e" text-anchor="start" >Accuracy on 160 standard questions</text>
+<text x="1256" y="30" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="15" font-weight="600" fill="#59636e" text-anchor="end" >Spend per run</text>
+<text x="206" y="84" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" font-weight="600" fill="#1f2328" text-anchor="end" >Full context</text>
+<rect x="230" y="64" width="720" height="28" rx="6" fill="#efeae0"/>
+<rect x="230" y="64" width="594.0" height="28" rx="6" fill="#3d4a5c"/>
+<path d="M781.6 78 H866.4 M781.6 71 v14 M866.4 71 v14" stroke="#1f2328" stroke-opacity="0.55" stroke-width="1.6" fill="none"/>
+<text x="878.3910891579822" y="85" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#1f2328" text-anchor="start" >82.5%</text>
+<text x="1256" y="74" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#1f2328" text-anchor="end" >$0.33 to answer</text>
+<text x="1256" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#59636e" text-anchor="end" >$0.00 to ingest</text>
+<text x="206" y="160" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" font-weight="600" fill="#1f2328" text-anchor="end" >Open Mate</text>
+<rect x="230" y="140" width="720" height="28" rx="6" fill="#efeae0"/>
+<rect x="230" y="140" width="495.0" height="28" rx="6" fill="#0e7c6b"/>
+<path d="M673.3 154 H776.7 M673.3 147 v14 M776.7 147 v14" stroke="#1f2328" stroke-opacity="0.55" stroke-width="1.6" fill="none"/>
+<text x="788.7118337520533" y="161" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#1f2328" text-anchor="start" >68.8%</text>
+<text x="1256" y="150" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#1f2328" text-anchor="end" >$0.37 to answer</text>
+<text x="1256" y="170" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#59636e" text-anchor="end" >$5.30 to ingest</text>
+<text x="206" y="236" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" font-weight="600" fill="#1f2328" text-anchor="end" >Mem0 2.2.1</text>
+<rect x="230" y="216" width="720" height="28" rx="6" fill="#efeae0"/>
+<rect x="230" y="216" width="405.0" height="28" rx="6" fill="#b4581b"/>
+<path d="M579.7 230 H690.3 M579.7 223 v14 M690.3 223 v14" stroke="#1f2328" stroke-opacity="0.55" stroke-width="1.6" fill="none"/>
+<text x="702.345060755229" y="237" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#1f2328" text-anchor="start" >56.2%</text>
+<text x="1256" y="226" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#1f2328" text-anchor="end" >$0.05 to answer</text>
+<text x="1256" y="246" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#59636e" text-anchor="end" >$0.70 to ingest</text>
+<text x="206" y="312" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" font-weight="600" fill="#1f2328" text-anchor="end" >Naive RAG</text>
+<rect x="230" y="292" width="720" height="28" rx="6" fill="#efeae0"/>
+<rect x="230" y="292" width="333.0" height="28" rx="6" fill="#7c6f9b"/>
+<path d="M507.4 306 H618.6 M507.4 299 v14 M618.6 299 v14" stroke="#1f2328" stroke-opacity="0.55" stroke-width="1.6" fill="none"/>
+<text x="630.625468177805" y="313" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="19" font-weight="700" fill="#1f2328" text-anchor="start" >46.2%</text>
+<text x="1256" y="302" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#1f2328" text-anchor="end" >$0.04 to answer</text>
+<text x="1256" y="322" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="14" font-weight="400" fill="#59636e" text-anchor="end" >$0.00 to ingest</text>
+<text x="230" y="420" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans',Helvetica,Arial,sans-serif" font-size="13" font-weight="400" fill="#59636e" text-anchor="start" >Whiskers: 95% interval. Every system answered with gpt-6-luna.</text>
+</svg>

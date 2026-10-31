@@ -1,6 +1,27 @@
-# LedgerBench
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/figures/banner-dark.svg">
+    <img alt="LedgerBench: can an AI assistant's memory keep the books on a person's life?" src="docs/figures/banner-light.svg" width="100%">
+  </picture>
+</p>
 
-**Can an AI assistant's memory keep the books on a person's life?**
+<p align="center">
+  <a href="https://github.com/Ibrahimrahhal/ledger-bench/actions/workflows/test.yml"><img alt="Tests" src="https://github.com/Ibrahimrahhal/ledger-bench/actions/workflows/test.yml/badge.svg"></a>
+  <a href="docs/CHANGELOG.md"><img alt="Dataset 1.1" src="https://img.shields.io/badge/dataset-1.1-0e7c6b"></a>
+  <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-3d4a5c">
+  <img alt="Scoring: standard library only" src="https://img.shields.io/badge/scoring-stdlib%20only-b4581b">
+  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-7c6f9b"></a>
+</p>
+
+<p align="center">
+  <a href="#results"><b>Results</b></a> &nbsp;·&nbsp;
+  <a href="#how-it-works"><b>How it works</b></a> &nbsp;·&nbsp;
+  <a href="#quick-start"><b>Quick start</b></a> &nbsp;·&nbsp;
+  <a href="#add-your-memory-system"><b>Add your system</b></a> &nbsp;·&nbsp;
+  <a href="docs/SPEC.md"><b>Spec</b></a>
+</p>
+
+<br>
 
 LedgerBench is a benchmark for agent memory on structured personal data. A
 simulated person chats with their assistant every day for weeks or months:
@@ -8,23 +29,107 @@ what they spent, what they ate, the gym session they did, what the scale said,
 the plan they changed, the number they got wrong yesterday. Then they ask the
 kind of questions people actually ask of their own records:
 
-- How much did I spend on groceries in March?
-- What was my average daily calorie intake on weekends between 8 March and 1 April?
-- On which days was I scheduled to do lower-body sessions on 1 March, by the plan I had then?
-- How much did I spend on coffee in April on days after I slept under 7 hours?
+> How much did I spend on groceries in March?<br>
+> What was my average daily calorie intake on weekends between 8 March and 1 April?<br>
+> On which days was I scheduled to do lower-body sessions on 1 March, by the plan I had then?<br>
+> How much did I spend on coffee in April on days after I slept under 7 hours?
 
 Every answer is computed by the generator from structured truth that the
 systems never see. Almost every answer is scored without an LLM judge.
 
-## Why another memory benchmark
+## Results
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/figures/results-dark.svg">
+    <img alt="Accuracy: full context 82.5%, Open Mate 68.8%, Mem0 56.2%, naive RAG 46.2%" src="docs/figures/results-light.svg" width="100%">
+  </picture>
+</p>
+
+First results, October 2026, on dataset 1.1. Four systems answered the same
+160 questions: the `standard` questions of the four people who track all four
+domains (u1, u2, u5, u8; 2,395 messages over 90 days each). The subset was
+chosen by that rule, not by difficulty, to fit the budget of a first run.
+Every system answered with `gpt-6-luna`.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/figures/skills-dark.svg">
+    <img alt="Accuracy by skill: every system recalls facts well; Mem0 and RAG fall to 0 to 33% on totals, windows, joins and plan adherence" src="docs/figures/skills-light.svg" width="100%">
+  </picture>
+</p>
+
+**Remembering a fact is solved.** Every system answers lookups and
+current-state questions at 80% or better.
+
+**Computing over records is not, for retrieval-based memory.** Mem0 and RAG
+fall to 0 to 33% on totals, windows, joins across domains and plan adherence,
+because a total needs every relevant record and retrieval returns a few. Open
+Mate, which writes records into tables it defines and queries them, keeps 55
+to 75% on the same questions.
+
+**Full context wins while the history fits.** A 90-day log is 15,000 to 20,000
+tokens, and a model that reasons before answering adds it up well. The `long`
+size, a year per person, is where that should stop holding; it hasn't been
+run yet.
+
+**Open Mate loses most where its own tables are wrong.** Reading the tables it
+built shows schemas missing a column the questions need (an expenses table
+with no category), sets and weights kept as free text, retracted entries left
+in, and small talk turned into tables. Its ingestion also costs far more:
+about 18,000 prompt tokens per model call and two calls per logged message.
+
+Not yet run: the other 8 `standard` people, the `long` size, and a second
+answer model.
+
+<details>
+<summary><b>The numbers behind the charts</b></summary>
+<br>
+
+| System | Accuracy | 95% interval | Ingestion | Answering | Mean latency |
+|---|---|---|---|---|---|
+| Full context | **82.5%** | ±5.9 | $0.00 | $0.33 | 8.6 s |
+| [Open Mate](https://openmate.si) | 68.8% | ±7.2 | $5.30 | $0.37 | 9.0 s |
+| [Mem0](https://github.com/mem0ai/mem0) 2.2.1 | 56.2% | ±7.7 | $0.70 | $0.05 | 4.5 s |
+| Naive RAG | 46.2% | ±7.7 | $0.00 | $0.04 | 4.0 s |
+
+By skill (the number of questions in brackets; a question can have several):
+
+| Skill | Full context | Open Mate | Mem0 | Naive RAG |
+|---|---|---|---|---|
+| Lookup (25) | 96% | 88% | 96% | 80% |
+| State now (19) | 100% | 89% | 100% | 95% |
+| As of a date (13) | 100% | 100% | 100% | 92% |
+| Aggregate (63) | 78% | 65% | 33% | 25% |
+| Window (21) | 81% | 67% | 24% | 10% |
+| Cross-domain (11) | 64% | 55% | 0% | 0% |
+| Adherence (8) | 75% | 75% | 12% | 0% |
+| Group (13) | 100% | 54% | 69% | 38% |
+| Change (19) | 68% | 42% | 42% | 47% |
+| Correction (37) | 62% | 54% | 32% | 27% |
+| Budget (6) | 17% | 17% | 17% | 0% |
+
+Every run and every reply is in [`results/`](results/), and
+[`results/LEADERBOARD.md`](results/LEADERBOARD.md) has the full table. The
+charts are drawn from those runs by
+[`docs/figures/make_figures.py`](docs/figures/make_figures.py).
+
+</details>
+
+## How it works
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/figures/how-it-works-dark.svg">
+    <img alt="Simulate, ingest, ask, score" src="docs/figures/how-it-works-light.svg" width="100%">
+  </picture>
+</p>
 
 The public long-term-memory benchmarks, [LoCoMo](https://arxiv.org/abs/2402.17753)
 and [LongMemEval](https://arxiv.org/abs/2410.10813), ask about facts and events
 in a conversation: who said what, and when. They don't ask for a total. Yet a
 total is what people want from an assistant that tracks their spending, food
-or training. It's also where the memory layers people use today fail: in the
-first results below, Mem0 and naive RAG answer a third or less of the
-questions that need a total, while getting nearly every fact lookup right.
+or training, and it's where the memory layers people use today fail.
 
 LedgerBench is only about records. To do well, a system has to:
 
@@ -33,9 +138,9 @@ LedgerBench is only about records. To do well, a system has to:
 3. **Track state that changes**: a training plan, a budget, a calorie target, a subscription price.
 4. **Compute over them**: sums, counts, averages, maxima, differences, top groups, joins across domains.
 
-## What's in it
-
-**Four domains.**
+<details>
+<summary><b>Four domains</b>: spending, food, training and body</summary>
+<br>
 
 | Domain | Records | Changes over time |
 |---|---|---|
@@ -44,7 +149,11 @@ LedgerBench is only about records. To do well, a system has to:
 | Training | Logged workouts with sets, reps and weights; runs; skipped sessions | A weekly plan changed 3 to 8 times in 90 days |
 | Body | Weight, sleep, steps, resting heart rate | |
 
-**What makes it hard, on purpose.**
+</details>
+
+<details>
+<summary><b>What makes it hard</b>, on purpose</summary>
+<br>
 
 - About 3% of records are corrected later and 1% retracted.
 - About 10% are logged a day or more late ("forgot to say, yesterday...").
@@ -52,7 +161,11 @@ LedgerBench is only about records. To do well, a system has to:
 - Amounts, times and lifts come in many formats (`€14`, `14 euros`, `31:10`, `7h20`, `4x6 @ 80`, `80kg for 4 sets of 6`).
 - People reference earlier entries ("same breakfast as yesterday").
 
-**Eleven skills,** tagged on every question:
+</details>
+
+<details>
+<summary><b>Eleven skills</b>, tagged on every question</summary>
+<br>
 
 | Skill | Example |
 |---|---|
@@ -68,7 +181,13 @@ LedgerBench is only about records. To do well, a system has to:
 | `adherence` | How many sessions on my plan in March did I not do? |
 | `budget` | How much of my eating-out budget is left for March? |
 
-**Three sizes,** generated deterministically from a seed (default 2026):
+</details>
+
+<details>
+<summary><b>Three sizes</b>, from a 3-week smoke test to a year per person</summary>
+<br>
+
+Generated deterministically from a seed (default 2026):
 
 | Size | People | Days | Messages | Records | Questions | Use |
 |---|---|---|---|---|---|---|
@@ -80,7 +199,11 @@ In `standard`, 23% of questions depend on a correction or retraction and 7%
 join two domains. Answer types: numbers 73%, counts 13%, categories 9%, dates
 3%, sets 1%, free text under 1%.
 
-### A day of data
+</details>
+
+<details>
+<summary><b>A day of data</b>: meet Owen</summary>
+<br>
 
 From the first session of one `standard` user, Owen:
 
@@ -107,11 +230,20 @@ Three of Owen's 40 questions, with their gold answers:
 `data/ledgerbench-<size>.preview.md` shows more, with each question's evidence
 and derivation.
 
-## How answers are scored
+</details>
+
+### Scoring
 
 Every question ends with the same instruction: end the reply with a line
 starting `Answer:`. The scorer reads that line and applies a rule by answer
-type:
+type, so a run can be re-scored for free and two people scoring it get the
+same number. Before trusting a run, the scorer is checked against two test
+systems: an oracle that answers with the gold scores 100% on every size, and
+a null system that always says "I don't know" scores 0%.
+
+<details>
+<summary><b>The rule for each answer type</b></summary>
+<br>
 
 | Answer type | Correct when |
 |---|---|
@@ -125,64 +257,7 @@ The number rule skips dates, clock times, sets-by-reps and numbers restated
 from the question, so an answer can't win by repeating the question. The
 closed lists mean an answer can't win by naming every category.
 
-Before trusting a run, the scorer is checked against two test systems. An
-oracle that answers with the gold scores 100% on every size, and a null
-system that always says "I don't know" scores 0%.
-
-## Results
-
-First results, October 2026, on dataset 1.1. Four systems answered the same
-160 questions: the `standard` questions of the four people who track all four
-domains (u1, u2, u5, u8; 2,395 messages over 90 days each). The subset was
-chosen by that rule, not by difficulty, to fit the budget of a first run.
-Every system answered with `gpt-6-luna`. Runs and every reply are in
-`results/`; `results/LEADERBOARD.md` has the full table.
-
-| System | Accuracy | 95% interval | Ingestion | Answering | Mean latency |
-|---|---|---|---|---|---|
-| Full context | **82.5%** | ±5.9 | $0.00 | $0.33 | 8.6 s |
-| [Open Mate](https://openmate.si) | 68.8% | ±7.2 | $5.30 | $0.37 | 9.0 s |
-| [Mem0](https://github.com/mem0ai/mem0) 2.2.1 | 56.2% | ±7.7 | $0.70 | $0.05 | 4.5 s |
-| Naive RAG | 46.2% | ±7.7 | $0.00 | $0.04 | 4.0 s |
-
-By skill (the number of questions in brackets; a question can have several):
-
-| Skill | Full context | Open Mate | Mem0 | Naive RAG |
-|---|---|---|---|---|
-| Lookup (25) | 96% | 88% | 96% | 80% |
-| State now (19) | 100% | 89% | 100% | 95% |
-| As of a date (13) | 100% | 100% | 100% | 92% |
-| Aggregate (63) | 78% | 65% | 33% | 25% |
-| Window (21) | 81% | 67% | 24% | 10% |
-| Cross-domain (11) | 64% | 55% | 0% | 0% |
-| Adherence (8) | 75% | 75% | 12% | 0% |
-| Group (13) | 100% | 54% | 69% | 38% |
-| Change (19) | 68% | 42% | 42% | 47% |
-| Correction (37) | 62% | 54% | 32% | 27% |
-| Budget (6) | 17% | 17% | 17% | 0% |
-
-What it shows:
-
-- **Remembering a fact is solved.** Every system answers lookups and
-  current-state questions at 80% or better.
-- **Computing over records is not, for retrieval-based memory.** Mem0 and RAG
-  fall to 0 to 33% on totals, windows, joins across domains and plan adherence,
-  because a total needs every relevant record and retrieval returns a few.
-  Open Mate, which writes records into tables it defines and queries them,
-  keeps 55 to 75% on the same questions.
-- **Full context wins while the history fits.** A 90-day log is 15,000 to
-  20,000 tokens, and a model that reasons before answering adds it up well.
-  The `long` size, a year per person, is where that should stop holding; it
-  hasn't been run yet.
-- **Open Mate loses most where its own tables are wrong.** Reading the tables
-  it built shows schemas missing a column the questions need (an expenses
-  table with no category), sets and weights kept as free text, retracted
-  entries left in, and small talk turned into tables. Its ingestion also costs
-  far more: about 18,000 prompt tokens per model call and two calls per
-  logged message.
-
-Not yet run: the other 8 `standard` people, the `long` size, and a second
-answer model.
+</details>
 
 ## Quick start
 
@@ -203,8 +278,9 @@ ledgerbench run --system fullcontext --data data/ledgerbench-mini.json \
     --answer-model gpt-6-luna --users u1 --max-questions 5 --max-cost 0.50
 ```
 
-The datasets ship in `data/`, at dataset version 1.1 (`docs/CHANGELOG.md` says
-what changed). To regenerate them, or another seed:
+The datasets ship in `data/`, at dataset version 1.1
+([`docs/CHANGELOG.md`](docs/CHANGELOG.md) says what changed). To regenerate
+them, or another seed:
 
 ```bash
 ledgerbench generate --size standard --seed 2026 --out data
@@ -213,16 +289,16 @@ ledgerbench generate --size standard --seed 2026 --out data
 Generation fails if the independent checker in `ledgerbench/generate/check.py`
 can't re-derive every gold answer from the records.
 
-### Systems included
-
-| System | What it does |
+| Built-in system | What it does |
 |---|---|
 | `fullcontext` | Every session so far in the prompt, dated. The ceiling while a history fits in context. |
 | `rag` | Each message embedded with its date; the 20 nearest go in the prompt. |
 | `mem0` | The open-source Mem0 library (2.2.1) with Qdrant and its spaCy NLP extra. Needs `pip install -e ".[mem0]"`, `python -m spacy download en_core_web_sm` and `docker run -p 6333:6333 qdrant/qdrant`. |
 | `oracle`, `null` | Test systems that check the scorer. |
 
-### `ledgerbench run` options
+<details>
+<summary><b>Every <code>ledgerbench run</code> option</b></summary>
+<br>
 
 | Option | Meaning |
 |---|---|
@@ -243,6 +319,8 @@ extracted answer, the score and its reason, latency and cost per question, and
 a `summary.json` broken down by domain, skill and answer type. Runs resume
 where they stopped. `ledgerbench score --run-dir ...` re-scores saved replies
 without calling any model.
+
+</details>
 
 ## Add your memory system
 
@@ -289,7 +367,7 @@ A system that calls models through its own client must still report what it
 spent, with `Usage.record(model, tokens_in, tokens_out, cached_in, cost_usd)`.
 Optional `forget` and `restore` hooks make long runs resumable.
 
-### Fair comparison
+**A fair comparison** holds all six of these:
 
 1. Every system in a table answers with the same model, named in the table.
 2. Every system gets the same sessions with the same dates.
@@ -298,12 +376,18 @@ Optional `forget` and `restore` hooks make long runs resumable.
 5. Cost and latency are reported beside accuracy, ingestion separately.
 6. Raw replies are kept, so any score can be re-read.
 
-## Repository layout
+Ran your system? Open a pull request with its run directory under `results/`,
+and it joins the table.
+
+<details>
+<summary><b>Repository layout and development</b></summary>
+<br>
 
 ```
 data/                      the three datasets and their previews
 docs/SPEC.md               the contract: formats, question rules, scoring
 docs/CHANGELOG.md          what changed in each dataset version
+docs/figures/              the README's figures, and the script that draws them
 ledgerbench/generate/      the simulators, question builders and the independent checker
 ledgerbench/scoring.py     every scoring rule, with its reasoning
 ledgerbench/runner.py      ingestion, answering, resuming, the budget guard
@@ -311,16 +395,17 @@ ledgerbench/systems/       the interface and the built-in systems
 tests/                     no test calls a paid API
 ```
 
-## Development
-
 ```bash
 pip install -e ".[dev,openai]"
 ruff check . && ruff format --check .
 pytest
+python docs/figures/make_figures.py    # after a new run, redraw the charts
 ```
 
 CI runs lint, the tests, and the oracle and null systems on `mini`, on Python
 3.10 and 3.13.
+
+</details>
 
 ## Citation
 
@@ -335,5 +420,5 @@ CI runs lint, the tests, and the oracle and null systems on `mini`, on Python
 
 ## License
 
-MIT, see `LICENSE`. The data is synthetic: every person, place and number in
-it was generated.
+MIT, see [`LICENSE`](LICENSE). The data is synthetic: every person, place and
+number in it was generated.
